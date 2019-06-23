@@ -8,14 +8,14 @@
     },
     "repository": {
         "type": "git",
-        "url": "https://raj-thingscloud@bitbucket.org/raj-thingscloud/restful-api-node.git"
+        "url": "https://deepak5@bitbucket.org/thethingscloud/thingsai-new-backend.git"
     },
     "author": "Things Cloud",
     "license": "MIT",
     "bugs": {
-        "url": "https://bitbucket.org/raj-thingscloud/restful-api-node/issues"
+        "url": "https://deepak5@bitbucket.org/thethingscloud/thingsai-new-backend/issues"
     },
-    "homepage": "https://bitbucket.org/raj-thingscloud/restful-api-node/overview",
+    "homepage": "https://deepak5@bitbucket.org/thethingscloud/thingsai-new-backend/overview",
     "dependencies": {
         "async": "^2.6.0",
         "bcrypt": "^1.0.3",
