@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>dfgsrgdsg</title>
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+	<script src="https://code.highcharts.com/highcharts.js"></script>
+	<script src="https://code.highcharts.com/modules/series-label.js"></script>
+	<script src="https://code.highcharts.com/modules/exporting.js"></script>
+
+	<script src="https://rawgit.com/LeshikJanz/libraries/master/Chartist/chartist.min.js"></script>
+	<script src="https://rawgit.com/LeshikJanz/libraries/master/Chartist/chartist.min.css"></script>
+
+	<style type="text/css">
+		.ct-label {
+		  font-size: 20px;
+		}
+	</style>
+
+</head>
+
+<body>
+
+<div class="ct-chart ct-perfect-fourth"></div>
+
+<script type="text/javascript">
+
+	var data = {
+	  labels: ['Bananas', 'Apples', 'Grapes'],
+	  series: [20, 15, 40]
+	};
+
+	var options = {
+	  labelInterpolationFnc: function(value) {
+	    return value[0]
+	  }
+	};
+
+	var responsiveOptions = [
+	  ['screen and (min-width: 640px)', {
+	    chartPadding: 30,
+	    labelOffset: 130,
+	    labelDirection: 'explode',
+	    labelInterpolationFnc: function(value) {
+	      return value;
+	    }
+	  }],
+	  ['screen and (min-width: 1024px)', {
+	    labelOffset: 80,
+	    chartPadding: 20
+	  }]
+	];
+
+	new Chartist.Pie('.ct-chart', data, options, responsiveOptions);
+	
+	
+</script>
+
+</body>
+
+</html>

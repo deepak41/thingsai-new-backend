@@ -1,0 +1,101 @@
+/***** Custom fonts START *****/
+
+@font-face {
+  font-family: OpenSans;
+  src:url(../fonts/OpenSans-Regular.ttf);
+}
+
+@font-face {
+  font-family: ChunkFive;
+  src:url(../fonts/Chunk.otf);
+}
+
+@font-face {
+  font-family: DroidSans;
+  src:url(../fonts/DroidSans.ttf);
+}
+
+@font-face {
+  font-family: Lato-Regular;
+  src:url(../fonts/Lato-Regular.ttf);
+}
+
+@font-face {
+  font-family: Calibri;
+  src:url(../fonts/Calibri.ttf);
+}
+
+@font-face {
+  font-family: hind-regular;
+  src:url(../fonts/hind-regular.ttf);
+}
+
+
+
+
+
+@font-face {
+  font-family: SEGOEUIL;
+  src:url(../fonts/SEGOEUIL.ttf);
+}
+
+@font-face {
+  font-family: Roboto-Regular;
+  src:url(../fonts/Roboto-Regular.ttf);
+}
+
+@font-face {
+  font-family: Raleway-Regular;
+  src:url(../fonts/Raleway-Regular.ttf);
+}
+
+@font-face {
+  font-family: PTserif;
+  src:url(../fonts/PTserif.ttf);
+}
+
+@font-face {
+  font-family: Merriweather-Regular;
+  src:url(../fonts/Merriweather-Regular.otf);
+}
+
+
+/***** Custom fonts END *****/
+
+
+
+.class1 {
+    color: #90126f;
+    margin-left: 100px;
+    /*font-family: Merriweather-Regular;*/
+}
+
+
+.class2 {
+    color: #dd9933;
+    font-size: 1.40rem;
+    margin-left: 100px;
+    font-family: Lato-Regular;
+}
+
+.spacer {
+     padding-top: 30px;
+ }
+
+.spacer2 {
+     padding-top: 120px;
+ }
+
+ .spacer3 {
+     padding-top: 400px;
+ }
+
+.footer {
+    /*position: fixed;*/
+ /*   left: 0;
+    bottom: 0;*/
+    width: 100%;
+    /*background-color: red;*/
+    color: white;
+    text-align: center;
+}

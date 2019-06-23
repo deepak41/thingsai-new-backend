@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Report Highcharts</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.3.0/Chart.js"></script>
+	<script src="echarts.min.js"></script>
+
+	<script src="https://code.highcharts.com/highcharts.js"></script>
+	<script src="https://code.highcharts.com/modules/series-label.js"></script>
+	<script src="https://code.highcharts.com/modules/exporting.js"></script>
+
+	<link rel="stylesheet" href="/static/css/test.css">
+
+
+</head>
+
+<body>
+
+<div class="spacer2"></div>
+
+<div class="class1">
+	<h1>Thingscloud Technologies</h1>
+</div>
+
+<div class="class2">
+	<h3> Site ID: <%-site_id%></h3>
+	<h3> Site Name: <%-location%></h3>
+</div>
+
+<div class="class2">
+	<h3> Site ID: <%-site_id%></h3>
+	<h3> Site Name: <%-location%></h3>
+</div>
+
+<div>
+	<img src="/static/img/logo.pdf" />
+</div>
+
+<div class="spacer"></div>
+
+
+
+<div class="container">
+	<div class="row">
+		<div class="col-sm-6 col-md-6">
+			<div id="container1">
+				
+			</div>
+		</div>
+		
+	</div>
+</div>
+
+<div class="container">
+	<div class="row">
+		<div class="col-sm-8 col-md-8 col-md-offset-2 col-sm-offset-2">
+			<canvas id="chartJSContainer" width="400" height="200"></canvas>
+		</div>
+		
+	</div>
+</div>
+
+<div id="main" style="width: 600px;height:400px;"></div>
+
+
+<script type="text/javascript" src="/static/js/test.js"></script>
+
+
+<script type="text/javascript">
+
+	abc(<%-JSON.stringify(data)%>);
+	createChart();
+	createChart2();
+	
+	
+</script>
+
+</body>
+
+</html>

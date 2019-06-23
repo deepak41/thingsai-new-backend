@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Report Highcharts</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+	<script src="https://code.highcharts.com/highcharts.js"></script>
+	<script src="https://code.highcharts.com/modules/series-label.js"></script>
+	<script src="https://code.highcharts.com/modules/exporting.js"></script>
+
+	<link rel="stylesheet" href="/static/css/test.css">
+
+
+</head>
+
+<body>
+
+<!-- //////////////////////////////////////////////////////////////////////////////////////////// -->
+
+	<div class="container">
+		<div class="spacer2"></div>
+
+		<!-- Company Logo -->
+		<div align="center">
+			<img src="/static/img/company_logo.jpg" style="width:50%; height:50%; padding-bottom: 70px"/>
+		</div>
+
+		<div class="spacer"></div>
+
+		<!-- site details -->
+		<div class="class1" style="font-family: PTserif;">
+			<h3> 
+				Site ID: 
+				<span style="font-family: Raleway-Regular; color: #05878a;"> <%-site_id%> </span> 
+			</h3>
+			<h3> 
+				Site Name:
+				<span style="font-family: Raleway-Regular; color: #05878a;"> <%-location%> </span> 
+			</h3>
+			<h3> 
+				Date:
+				<span style="font-family: Raleway-Regular; color: #05878a;"> <%-day%> </span> 
+			</h3>
+		</div>
+
+
+		<div class="spacer"></div>
+
+		<div class="row">
+
+			<div class="col-sm-6 col-md-6">
+				<p class="class2">
+					Total Energy Generated:
+					<span style="color: #074e67; font-size: 100%;"> <%-all_time_eng_gen%> kWh</span>
+				</p>
+			</div>
+
+			<div class="col-sm-6 col-md-6">
+
+				<p class="class2">
+					Energy Gen for this day:
+					<span style="color: #074e67; font-size: 100%;"> <%-eng_gen_today%> kWh</span>
+				</p>
+			</div>
+			
+		</div>
+
+		<div class="row">
+			<div class="col-sm-6 col-md-6">
+				<p class="class2">
+					Carbon foot Print:
+					<span style="color: #074e67; font-size: 100%;"> <%-co2%> kg</span>
+				</p>
+				
+			</div>
+			<div class="col-sm-6 col-md-6">
+				<p class="class2">
+					Trees planted:
+					<span style="color: #074e67; font-size: 100%;"> <%-trees%> </span>
+				</p>
+				
+			</div>
+			
+		</div>
+
+		<div class="spacer"></div>
+
+		<div class="row">
+			<div class="col-sm-12 col-md-12">
+				<div id="container1">
+					
+				</div>
+			</div>
+			
+		</div>
+
+
+
+		
+	</div>
+
+	<div class="spacer3"></div>
+
+	<div class="footer">
+		<p>Footer</p>
+		<img src="/static/img/park-footer.png" width="1200" height="150"/>
+	</div>
+
+<!-- //////////////////////////////////////////////////////////////////////////////////////////// -->
+
+
+
+
+<script type="text/javascript" src="/static/js/test.js"></script>
+
+
+<script type="text/javascript">
+
+	createLineChart(<%-JSON.stringify(data)%>, <%-JSON.stringify(day)%>);
+	
+	
+</script>
+
+</body>
+
+</html>
