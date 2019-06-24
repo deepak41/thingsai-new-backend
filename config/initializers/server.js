@@ -11,12 +11,18 @@ global.request = require('request');
 global.store = require('store2');
 global.async = require('async');
 
+
 var path = require('path');
 var bodyParser = require('body-parser');
 var morgan = require('morgan');
 var mongoose = require('mongoose');
 var RateLimit = require('express-rate-limit');
 var flog = require('../../libs/flog');
+
+/*Code for firebase*/
+global.fadmin = require("firebase-admin");
+global.fdb;
+/*Code for firebase*/
 
 
 var app;
@@ -58,12 +64,24 @@ var start = function(cb) {
 	app.use(validator());
 	logger.info('[SERVER] Initializing routes');
 
+	global.auth = require("../../libs/auth");
+
 	app.use(function(req, res, next) {
 		res.header("Access-Control-Allow-Origin", "*");
 		res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Authorization, Content-Type, Accept");
 		res.header('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS');
 		next();
 	});
+
+
+	/*Code for firebase*/
+	var serviceAccount = require("../../public/" + config.get('fserviceAccount'));
+	fadmin.initializeApp({
+		credential: fadmin.credential.cert(serviceAccount),
+		databaseURL: config.get('fdatabaseURL')
+	});
+	global.fdb = fadmin.firestore();
+	/*Code for firebase*/
 
 
 	// max number of requests from one ip in windowMs second
