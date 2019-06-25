@@ -43,3 +43,14 @@ exports.verifyToken = function(req, res, next) {
 };
 
 
+exports.verifyFireBaseToken = function(idToken, callback) {
+
+	fadmin.auth().verifyIdToken(idToken).then(function(decodedToken) {
+		callback(null, decodedToken);
+	})
+	.catch(function(error) {
+		callback(error, null)
+	});
+};
+
+

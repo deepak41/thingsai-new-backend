@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-var bcrypt = require('bcrypt');
+var bcrypt = require('bcryptjs');
 
 
 var UserSchema = new Schema({
@@ -17,6 +17,23 @@ var UserSchema = new Schema({
 		type: String,
 		required: false,
 		default: "Enter your name"
+	},
+	phone_no: {
+		type: Number,
+		default: 0
+	},
+	user_image: {
+	    type: String,
+	    default: 'Add an image'
+	},
+	is_verified: {
+		type: Number,
+		default: 0,
+		required: true
+	},
+	devices : { 
+		type : Array , 
+		"default" : [] 
 	}
 	
 });
@@ -42,11 +59,7 @@ UserSchema.pre('save', function(next) {
 
 UserSchema.methods.comparePassword = function(passw, cb) {
 	bcrypt.compare(passw, this.password, function(err, isMatch) {
-		if (err) {
-			return cb(err);
-		}
-		console.log(isMatch)
-		cb(null, isMatch);
+		cb(err, isMatch);
 	});
 };
 

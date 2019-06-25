@@ -21,4 +21,41 @@ module.exports = function(router) {
 			});
 		});
 
+
+	// for getting users, url /api/users/
+	router.route('/')
+		.get(function(req, res, next) {
+
+			var query = {};
+			if(req.body.email) {
+				query = {name: req.body.email};
+			}
+
+			User.find(query, function(err, user) {
+			    if (err) return res.status(500).send(err);   
+			    return res.status(200).send(user);
+			});
+
+			
+		});
+
+	// for updating user, url /api/users/
+	router.route('/')
+		.put(function(req, res, next) {
+
+			  User.findOne({email: req.body.email}, function(err, user) {
+			    if (err) return res.status(500).send(err);
+			    	user.password = "hello"
+
+					user.save(function(err) {
+						if (err) return next(err);
+						return res.status(200).send(user);
+					});
+
+			});
+
+			  
+			
+		});
+
 };
