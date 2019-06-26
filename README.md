@@ -1,4 +1,7 @@
 # ThingsAI Backend
-Repo used as example for the blog post on www.thethingscloud.com
+www.thethingscloud.com
 
-Find details here: http://www.codekitchen.ca/guide-to-structuring-and-building-a-restful-api-using-express-4/
+NodeJs, Expressjs & MongoDB based restful backend service for app.thingsai.io
+
+Repo used from: 
+https://github.com/tolgaek/express-sample-api/
