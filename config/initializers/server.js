@@ -9,6 +9,8 @@ global.validate = require('express-validation');
 global.request = require('request');
 global.store = require('store2');
 global.async = require('async');
+global.randomstring = require("randomstring");
+global.Utils = require('../../libs/utils');
 
 var path = require('path');
 var bodyParser = require('body-parser');
