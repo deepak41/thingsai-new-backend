@@ -35,6 +35,8 @@ var start = function(callback) {
 
 	// app.set('view engine', 'ejs');
 
+	global.auth = require("../auth");
+
 	mongoose.connect(nconf.get('database'), {useMongoClient: true}, function(error) {
 		if(error) {
 			error.message  = "[SERVER] Failed to connect to the DB"
@@ -54,15 +56,12 @@ var start = function(callback) {
 	app.use(validator());
 	logger.info('[SERVER] Initializing routes');
 
-	global.auth = require("../auth");
-
 	app.use(function(req, res, next) {
 		res.header("Access-Control-Allow-Origin", "*");
 		res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Authorization, Content-Type, Accept");
 		res.header('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS');
 		next();
 	});
-
 
 	/*Code for firebase*/
 	var serviceAccount = require("../../public/" + nconf.get('fserviceAccount'));
@@ -72,7 +71,6 @@ var start = function(callback) {
 	});
 	global.fdb = fadmin.firestore();
 	/*Code for firebase*/
-
 
 	// max number of requests from one ip in windowMs second
 	var apiLimiter = new RateLimit({
@@ -89,13 +87,19 @@ var start = function(callback) {
 		}
 	});
 	//app.use('/api/', apiLimiter);
+
+	app.use(function(req, res, next) {
+		console.log("YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY")
+		console.log("IP=" + req.connection.remoteAddress, "URL=" + req.url, "METHOD=" + req.method);
+		next()
+	});
+
 	require('../../app/routes/index')(app);
 
 	app.use('/static', express.static(path.join(__dirname, '../../staticfiles')));
 	app.use('/public', express.static(path.join(__dirname, '../../public')));
 	app.use('/reports', express.static(path.join(__dirname, '../../reports')));
 	
-
 	// Error handler
 	app.use(function(err, req, res, next) {
 
@@ -106,13 +110,6 @@ var start = function(callback) {
 			data: (app.get('env') === 'development' ? err : null)
 		});
 
-	});
-	
-
-	app.use(function(err, req, res, next) {
-
-		flog.crit(err, "IP=" + req.connection.remoteAddress, "URL=" + req.url, "METHOD=" + req.method);
-		
 	});
 
 	http.createServer(app).listen(nconf.get('NODE_PORT'), () => {
