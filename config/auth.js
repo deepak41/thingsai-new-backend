@@ -11,7 +11,7 @@ exports.signToken = function(userId) {
 
 	var token = jwt.sign(
 		{user: userId }, 
-		config.get('secret'),
+		nconf.get('secret'),
 		{expiresIn: 60*60}
 	);
 
@@ -24,7 +24,7 @@ exports.verifyToken = function(req, res, next) {
 
 	var parted = token.split(' ');
 	if (parted.length === 2) {
-		jwt.verify(parted[1], config.get('secret'), function(err, decoded) {
+		jwt.verify(parted[1], nconf.get('secret'), function(err, decoded) {
 			if(err) return next({
 				message: err.name + " " + err.message,
 				status: 401

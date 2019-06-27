@@ -1,16 +1,14 @@
 global.express = require('express');
 // global.socket = require("socket.io");
-global.config = require('nconf');
+global.nconf = require('nconf');
 global.logger = require('winston');
 global.passport = require('passport');
 global.Services = require('../../libs/services');
 global.validator = require('express-validator');
 global.validate = require('express-validation');
-global.messages = require('../helpers/messages');
 global.request = require('request');
 global.store = require('store2');
 global.async = require('async');
-
 
 var path = require('path');
 var bodyParser = require('body-parser');
@@ -27,17 +25,21 @@ global.fdb;
 
 var app;
 
-var start = function(cb) {
+var start = function(callback) {
 	'use strict';
 
 	app = express();
 
 	// app.set('view engine', 'ejs');
 
-	mongoose.connect(config.get('database'), {
-		useMongoClient: true
+	mongoose.connect(nconf.get('database'), {useMongoClient: true}, function(error) {
+		if(error) {
+			error.message  = "[SERVER] Failed to connect to the DB"
+			return callback(error)
+		}
+	  	logger.info('[SERVER] Successfully connected to the DB ' + nconf.get('database'));
 	});
-	mongoose.Promise = global.Promise;
+
 	app.use(morgan('common'));
 	app.use(bodyParser.urlencoded({
 		extended: true
@@ -46,25 +48,10 @@ var start = function(cb) {
 		type: '*/*'
 	}));
 
-	// var getToken = function() {
-	// 	Services.login(function(err, response) {
-	// 		if(err) {
-	// 			logger.info('[APP] ERROR could not get admin session token from baas server');
-	// 		}
-	// 		else {
-	// 			store.set('sessionToken', response);
-	// 			logger.info('[APP] SUCCESS Got admin session token from baas server');
-
-	// 		}			
-	// 	})
-	// };
-	// getToken();
-
-
 	app.use(validator());
 	logger.info('[SERVER] Initializing routes');
 
-	global.auth = require("../../libs/auth");
+	global.auth = require("../auth");
 
 	app.use(function(req, res, next) {
 		res.header("Access-Control-Allow-Origin", "*");
@@ -75,10 +62,10 @@ var start = function(cb) {
 
 
 	/*Code for firebase*/
-	var serviceAccount = require("../../public/" + config.get('fserviceAccount'));
+	var serviceAccount = require("../../public/" + nconf.get('fserviceAccount'));
 	fadmin.initializeApp({
 		credential: fadmin.credential.cert(serviceAccount),
-		databaseURL: config.get('fdatabaseURL')
+		databaseURL: nconf.get('fdatabaseURL')
 	});
 	global.fdb = fadmin.firestore();
 	/*Code for firebase*/
@@ -125,16 +112,8 @@ var start = function(cb) {
 		
 	});
 
-	var server = app.listen(config.get('NODE_PORT'));
-	// logger.info('[SERVER] Listening on port ' + config.get('NODE_PORT'));
-
-	logger.info('[SERVER] The server has started on ' + config.get('url') + ":" + config.get('NODE_PORT'));
-
-	// Rtalerts.test(server);
-
-	if (cb) {
-		return cb();
-	}
+	var server = app.listen(nconf.get('NODE_PORT'));
+	logger.info('[SERVER] The server has started at ' + nconf.get('url') + ":" + nconf.get('NODE_PORT'));
 };
 
 module.exports = start;

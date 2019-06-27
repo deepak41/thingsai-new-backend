@@ -18,17 +18,16 @@ nconf.argv();
 nconf.env();
 // Load config file for the environment
 require('./config/environments/' + nconf.get('NODE_ENV'));
-logger.info(nconf.get('database'));
 logger.info('[APP] Starting server initialization');
 
-// Initialize Modules
-async.series([
-  function startServer(callback) {
-        server(callback);
-  }], function (err) {
+//Initialize Modules
+async.waterfall([
+  function(callback) {
+    server(callback);
+  }],function(err, result) {
     if (err) {
-        logger.error('[APP] initialization failed', err);
-    } else {
-        logger.info('[APP] initialized SUCCESSFULLY');
+	  logger.error('[APP] initialization failed');
+      return logger.error(err.message);
     }
+	logger.info('[APP] initialized SUCCESSFULLY');		
 });
