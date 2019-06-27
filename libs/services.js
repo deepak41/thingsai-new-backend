@@ -59,7 +59,7 @@ Services.createPdf = function(site_id, start_ts, end_ts, report_name, callback) 
 	};
 
 
-	var url = config.get('mserver') +"/api/reporttypes/" + report_name + "?site_id=" + site_id + "&start_ts=" + start_ts + "&end_ts=" + end_ts;
+	var url = nconf.get('mserver') +"/api/reporttypes/" + report_name + "?site_id=" + site_id + "&start_ts=" + start_ts + "&end_ts=" + end_ts;
 	
 	var file_path = path.join(__dirname, '../reports') + "/";
 	var file_name = "Report_for_site_" + site_id + "_" + start_ts + "_" + end_ts +".pdf";
