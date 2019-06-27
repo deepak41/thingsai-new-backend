@@ -17,7 +17,7 @@ module.exports = function(router) {
 
 			newUser.save(function(err) {
 				if (err) return next(err);
-				return res.status(200).send(newUser);
+				return res.status(200).json(newUser);
 			});
 		});
 
@@ -33,7 +33,7 @@ module.exports = function(router) {
 
 			User.find(query, function(err, user) {
 			    if (err) return res.status(500).send(err);   
-			    return res.status(200).send(user);
+			    return res.status(200).json(user);
 			});
 
 			
@@ -49,7 +49,7 @@ module.exports = function(router) {
 
 					user.save(function(err) {
 						if (err) return next(err);
-						return res.status(200).send(user);
+						return res.status(200).json(user);
 					});
 
 			});
@@ -71,7 +71,7 @@ module.exports = function(router) {
 					User.findOne({email: req.body.email}, function(err, user) {
 						if(err) return next(err);
 						if (!user) {
-							res.send({
+							res.json({
 								error: true,
 								message: "No account with that email address exists."
 							});
@@ -97,7 +97,7 @@ module.exports = function(router) {
 				}],
 				function(err, result) {
 					if (err) return next(err);
-					res.send({
+					res.json({
 						error: false,
 						data: result
 					});
@@ -117,12 +117,12 @@ module.exports = function(router) {
 				if (err) return next(err);
 
 				if (!user) {
-					res.send({
+					res.json({
 						error: true,
 						message: "The link is either invalid or has expired."
 					});
 				}
-				res.send({
+				res.json({
 					error: false,
 					message: "The link is active."
 				});
@@ -140,7 +140,7 @@ module.exports = function(router) {
 
 				if (!user) {
 
-					res.send({
+					res.json({
 						error: true,
 						message: "The link is either invalid or has expired."
 					});
@@ -150,7 +150,7 @@ module.exports = function(router) {
 					user.resetPasswordExpires = undefined;
 					user.save(function(err) {
 						if (err) next(err);
-						res.send({
+						res.json({
 							error: false,
 							message: "Password has been changed successfully."
 						})

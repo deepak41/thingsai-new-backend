@@ -8,13 +8,11 @@ exports.authenticate = function() {
 };
 
 exports.signToken = function(userId) {
-
-	var token = jwt.sign(
+	var token = 'Bearer ' + jwt.sign(
 		{user: userId }, 
 		nconf.get('secret'),
 		{expiresIn: 60*60}
 	);
-
 	return token;
 };
 
@@ -39,6 +37,9 @@ exports.verifyToken = function(req, res, next) {
 				next();
 			}); 
 		});
+	}
+	else {
+		return next("err");
 	}
 };
 
