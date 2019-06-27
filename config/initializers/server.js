@@ -16,6 +16,7 @@ var morgan = require('morgan');
 var mongoose = require('mongoose');
 var RateLimit = require('express-rate-limit');
 var flog = require('../../libs/flog');
+var http = require("http");
 
 /*Code for firebase*/
 global.fadmin = require("firebase-admin");
@@ -112,8 +113,9 @@ var start = function(callback) {
 		
 	});
 
-	var server = app.listen(nconf.get('NODE_PORT'));
-	logger.info('[SERVER] The server has started at ' + nconf.get('url') + ":" + nconf.get('NODE_PORT'));
+	http.createServer(app).listen(nconf.get('NODE_PORT'), () => {
+		logger.info('[SERVER] The server has started at ' + nconf.get('url') + ":" + nconf.get('NODE_PORT'));
+	});
 };
 
 module.exports = start;
