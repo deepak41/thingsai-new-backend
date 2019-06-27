@@ -58,4 +58,107 @@ module.exports = function(router) {
 			
 		});
 
+
+	router.route('/password/forgot')
+		.post(function(req, res, next) {
+
+			async.waterfall([
+				function(callback) {
+					var rpToken = randomstring.generate(35);
+					callback(null, rpToken);
+				},
+				function(rpToken, callback) {
+					User.findOne({email: req.body.email}, function(err, user) {
+						if(err) return next(err);
+						if (!user) {
+							res.send({
+								error: true,
+								message: "No account with that email address exists."
+							});
+						}
+						user.resetPasswordToken = rpToken;
+						user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
+
+						user.save(function(err) {
+							callback(err, rpToken, user);
+						});
+					});
+				},
+				function(rpToken, user, callback) {
+						Utils.sendMail(rpToken, user.email, user.name, function(err, result) {
+							if(err) return next(err);
+							var data = {
+								message: "An email has been sent to " + user.email + ". Please Check!",
+								data: {"email": user.email},
+								apimessage: result
+							};
+							callback(err, data)
+						})
+				}],
+				function(err, result) {
+					if (err) return next(err);
+					res.send({
+						error: false,
+						data: result
+					});
+			});
+	});
+
+
+
+	router.route('/password/reset/:token')
+		.get(function(req, res, next) {
+			User.findOne({
+				resetPasswordToken: req.params.token,
+				resetPasswordExpires: {
+					$gt: Date.now()
+				}
+			}, function(err, user) {
+				if (err) return next(err);
+
+				if (!user) {
+					res.send({
+						error: true,
+						message: "The link is either invalid or has expired."
+					});
+				}
+				res.send({
+					error: false,
+					message: "The link is active."
+				});
+			});
+
+		})
+		.post(function(req, res, next) {
+			User.findOne({
+				resetPasswordToken: req.params.token,
+				resetPasswordExpires: {
+					$gt: Date.now()
+				}
+			}, function(err, user) {
+				if (err) return next(err);
+
+				if (!user) {
+
+					res.send({
+						error: true,
+						message: "The link is either invalid or has expired."
+					});
+				} else {
+					user.password = req.body.password;
+					user.resetPasswordToken = undefined;
+					user.resetPasswordExpires = undefined;
+					user.save(function(err) {
+						if (err) next(err);
+						res.send({
+							error: false,
+							message: "Password has been changed successfully."
+						})
+
+					});
+				}
+			});
+
+	});
+
 };

@@ -44,6 +44,7 @@
         "passport-jwt": "^3.0.1",
         "phantomjs": "^2.1.7",
         "promise": "^8.0.1",
+        "randomstring": "^1.1.5",
         "request": "^2.83.0",
         "request-promise": "^4.2.2",
         "require-dir": "^0.3.0",

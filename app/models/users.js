@@ -10,8 +10,7 @@ var UserSchema = new Schema({
 		required: [true, 'Email field is required']
 	},
 	password: {
-		type: String,
-		required: [true, 'Password field is required']
+		type: String
 	},
 	name: {
 		type: String,
@@ -34,12 +33,13 @@ var UserSchema = new Schema({
 	devices : { 
 		type : Array , 
 		"default" : [] 
-	}
+	},
+	resetPasswordToken: String,
+	resetPasswordExpires: Date
 	
 });
 
 UserSchema.pre('save', function(next) {
-
 	var user = this;
 	if (this.isModified('password') || this.isNew) {
 		bcrypt.genSalt(10, function(err, salt) {
@@ -69,7 +69,6 @@ module.exports = User;
 
 
 User.getFull = function(id, callback) {
-
 	User.findOne({_id: id}, function(err, user) { 
 		return callback(err, user)
 	});
