@@ -117,7 +117,7 @@ module.exports = function(router) {
 				if (err) return next(err);
 
 				if (!user) {
-					res.json({
+					return res.json({
 						error: true,
 						message: "The link is either invalid or has expired."
 					});
