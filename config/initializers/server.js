@@ -54,7 +54,6 @@ var start = function(callback) {
 	}));
 
 	app.use(validator());
-	logger.info('[SERVER] Initializing routes');
 
 	app.use(function(req, res, next) {
 		res.header("Access-Control-Allow-Origin", "*");
@@ -89,12 +88,13 @@ var start = function(callback) {
 	//app.use('/api/', apiLimiter);
 
 	app.use(function(req, res, next) {
-		console.log("YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY")
+		console.log("----------------Client Info------------------------------------------")
 		console.log("IP=" + req.connection.remoteAddress, "URL=" + req.url, "METHOD=" + req.method);
 		next()
 	});
 
 	require('../../app/routes/index')(app);
+	logger.info('[SERVER] Initialized routes');
 
 	app.use('/static', express.static(path.join(__dirname, '../../staticfiles')));
 	app.use('/public', express.static(path.join(__dirname, '../../public')));
