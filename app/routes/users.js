@@ -85,24 +85,24 @@ module.exports = function(router) {
 					});
 				},
 				function(rpToken, user, callback) {
-						Utils.sendMail(rpToken, user.email, user.name, function(err, result) {
-							if(err) return next(err);
-							var data = {
-								message: "An email has been sent to " + user.email + ". Please Check!",
-								data: {"email": user.email},
-								apimessage: result
-							};
-							callback(err, data)
-						})
+					Utils.sendPasswordResetMail(rpToken, user.email, user.name, function(err, result) {
+						var data = {
+							email: user.email,
+							apimessage: result,
+							message: "Password reset email has been successfully sent to " + user.email
+						};
+						callback(err, data)
+					})
 				}],
 				function(err, result) {
 					if (err) return next(err);
 					res.json({
 						error: false,
+						message: result.message,
 						data: result
 					});
 			});
-	});
+		});
 
 
 
@@ -117,7 +117,7 @@ module.exports = function(router) {
 				if (err) return next(err);
 
 				if (!user) {
-					res.json({
+					return res.json({
 						error: true,
 						message: "The link is either invalid or has expired."
 					});
