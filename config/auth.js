@@ -4,8 +4,25 @@ var jwt = require('jsonwebtoken');
 var User = require("../app/models/users");
 
 
-exports.authenticate = function() {
-	return passport.authenticate('jwt', {session: false})
+exports.authenticate = function(req, res, next) {
+	passport.authenticate('jwt', {session: false}, (data) => {
+		if(!data) return next({
+			status: 401,
+            message: "Token is invalid!"
+		});
+		User.getFull(data.user, function(err, user) {
+			if(!user) return next({
+				status: 401,
+                message: "No user found!"
+			});
+			user = user.toObject();
+			delete user.password;
+			delete user.__v;
+
+			res.locals.userInfo = user;
+			next();
+		});
+	})(req, res);
 };
 
 exports.signToken = function(userId) {
@@ -15,39 +32,6 @@ exports.signToken = function(userId) {
 		{expiresIn: 60*60}
 	);
 	return token;
-};
-
-exports.verifyToken = function(req, res, next) {
-	var token = req.headers.authorization;
-	if(!token) return next("err");
-
-	var parted = token.split(' ');
-	if (parted.length === 2) {
-		jwt.verify(parted[1], nconf.get('secret'), function(err, decoded) {
-			if(err) return next({
-				message: err.name + " " + err.message,
-				status: 401
-			});
-
-			User.getFull(decoded.user, function(err, user) {
-
-				if(!user) return next({
-					status: 401,
-                    message: "No user found!"
-				});
-
-				user = user.toObject();
-				delete user.password;
-				delete user.__v;
-
-				res.locals.userInfo = user;
-				next();
-			}); 
-		});
-	}
-	else {
-		return next("err");
-	}
 };
 
 

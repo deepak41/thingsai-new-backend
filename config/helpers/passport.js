@@ -7,6 +7,6 @@ module.exports = function(passport) {
 	opts.secretOrKey = nconf.get('secret');
 
 	passport.use(new JwtStrategy(opts, function(jwt_payload, done) {
-		done(null, jwt_payload);
+		done(jwt_payload);
 	}));
 };
