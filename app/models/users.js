@@ -27,8 +27,7 @@ var UserSchema = new Schema({
 	},
 	is_verified: {
 		type: Number,
-		default: 0,
-		required: true
+		default: 0
 	},
 	devices : { 
 		type : Array , 

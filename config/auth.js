@@ -1,3 +1,4 @@
+var passport = require('passport');
 require('../config/helpers/passport')(passport);
 var jwt = require('jsonwebtoken');
 var User = require("../app/models/users");
@@ -29,6 +30,12 @@ exports.verifyToken = function(req, res, next) {
 			});
 
 			User.getFull(decoded.user, function(err, user) {
+
+				if(!user) return next({
+					status: 401,
+                    message: "No user found!"
+				});
+
 				user = user.toObject();
 				delete user.password;
 				delete user.__v;
