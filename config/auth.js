@@ -15,10 +15,6 @@ exports.authenticate = function(req, res, next) {
 				status: 401,
                 message: "No user found!"
 			});
-			user = user.toObject();
-			delete user.password;
-			delete user.__v;
-
 			res.locals.userInfo = user;
 			next();
 		});

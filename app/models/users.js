@@ -75,9 +75,13 @@ module.exports = User;
 
 
 User.getFull = function(id, callback) {
-	User.findOne({_id: id}, function(err, user) { 
+	User.findOne({_id: id}, function(err, user){
+		user = user.toObject()
+		delete user.password;
+		delete user.__v;
+		delete user.resetPasswordExpires
+		delete user.resetPasswordToken
 		return callback(err, user)
 	});
-
 }
 
