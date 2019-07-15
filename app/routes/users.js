@@ -15,7 +15,7 @@ module.exports = function(router) {
 				name: req.body.name
 			});
 
-			newUser.save(function(err) {
+			newUser.save((err) => {
 				if (err) return next(err);
 				return res.status(200).json(newUser);
 			});
@@ -31,7 +31,7 @@ module.exports = function(router) {
 				query = {name: req.body.email};
 			}
 
-			User.find(query, function(err, user) {
+			User.find(query, (err, user) => {
 			    if (err) return res.status(500).send(err);   
 			    return res.status(200).json(user);
 			});
@@ -43,11 +43,11 @@ module.exports = function(router) {
 	router.route('/')
 		.put(function(req, res, next) {
 
-			  User.findOne({email: req.body.email}, function(err, user) {
+			  User.findOne({email: req.body.email}, (err, user) => {
 			    if (err) return res.status(500).send(err);
 			    	user.password = "hello"
 
-					user.save(function(err) {
+					user.save((err) => {
 						if (err) return next(err);
 						return res.status(200).json(user);
 					});
@@ -68,7 +68,7 @@ module.exports = function(router) {
 					callback(null, rpToken);
 				},
 				function(rpToken, callback) {
-					User.findOne({email: req.body.email}, function(err, user) {
+					User.findOne({email: req.body.email}, (err, user) => {
 						if(err) return next(err);
 						if (!user) {
 							res.json({
@@ -79,13 +79,13 @@ module.exports = function(router) {
 						user.resetPasswordToken = rpToken;
 						user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
 
-						user.save(function(err) {
+						user.save((err) => {
 							callback(err, rpToken, user);
 						});
 					});
 				},
 				function(rpToken, user, callback) {
-					Utils.sendPasswordResetMail(rpToken, user.email, user.name, function(err, result) {
+					Utils.sendPasswordResetMail(rpToken, user.email, user.name, (err, result) => {
 						var data = {
 							email: user.email,
 							apimessage: result,
@@ -110,10 +110,8 @@ module.exports = function(router) {
 		.get(function(req, res, next) {
 			User.findOne({
 				resetPasswordToken: req.params.token,
-				resetPasswordExpires: {
-					$gt: Date.now()
-				}
-			}, function(err, user) {
+				resetPasswordExpires: {$gt: Date.now()}
+			}, (err, user) => {
 				if (err) return next(err);
 
 				if (!user) {
@@ -132,10 +130,8 @@ module.exports = function(router) {
 		.post(function(req, res, next) {
 			User.findOne({
 				resetPasswordToken: req.params.token,
-				resetPasswordExpires: {
-					$gt: Date.now()
-				}
-			}, function(err, user) {
+				resetPasswordExpires: {$gt: Date.now()}
+			}, (err, user) => {
 				if (err) return next(err);
 
 				if (!user) {
@@ -148,7 +144,7 @@ module.exports = function(router) {
 					user.password = req.body.password;
 					user.resetPasswordToken = undefined;
 					user.resetPasswordExpires = undefined;
-					user.save(function(err) {
+					user.save((err) => {
 						if (err) next(err);
 						res.json({
 							error: false,

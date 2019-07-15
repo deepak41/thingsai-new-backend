@@ -18,12 +18,12 @@ module.exports = function(router) {
 
 			// to create a new device.
 			.post(auth.authenticate, function(req, res, next) {
-				Device.create(req.body, function (err, device) {
+				Device.create(req.body, (err, device) => {
 				    if (err) return next(err);
 
-				    User.findOne({email: res.locals.userInfo.email}, function(err, user) {
+				    User.findOne({email: res.locals.userInfo.email}, (err, user) => {
 						user.devices.push({device_id: device.device_id, role: "owner"});
-						user.save(function(err, test) {
+						user.save((err, test) => {
 							if (err) return next(err);
 							return res.json({
 								error: false,
@@ -50,14 +50,14 @@ module.exports = function(router) {
 			.delete(auth.authenticate, Device.authorize("owner"), function(req, res, next) {
 				Device.findOneAndRemove({device_id: req.query.device_id}, (err, device) => {
 					if (!device) return next("err");
-					User.findOne({email: res.locals.userInfo.email}, function(err, user) {
+					User.findOne({email: res.locals.userInfo.email}, (err, user) => {
 						user.devices.find((obj, index) => {
 						    if (obj.device_id == req.query.device_id) {
 						        user.devices.splice(index, 1);
 						        return true; // stop searching
 						    }
 						});
-						user.save(function(err, test) {
+						user.save((err, test) => {
 							if (err) return next(err);
 							return res.json({
 								error: false,
