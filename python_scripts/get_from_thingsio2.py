@@ -19,7 +19,7 @@ def getUsers():
 	if len(users) != 0:
 		for user in users:
 			if user["email"] not in ["balub997@gmail.com", "thingsioai@gmail.com", "testmailid80@gmail.com"]:
-				print("555555555555555555555555555555555555555555555555555555555555555555555555555555555555555")
+				print("************************EMAIL**********************************************************************")
 				print(user["email"])
 				for group in user["groups"]:
 					getGroup(group)
@@ -39,7 +39,7 @@ def getDevices(site_id):
 	devices = list(devices)
 	if len(devices) >= 1:
 		for device in devices:
-			print("TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT")
+			print("--------------------------------DEVICES-----------------------------------")
 			print(device["device_id"])
 
 

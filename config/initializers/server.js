@@ -1,14 +1,9 @@
 global.express = require('express');
-// global.socket = require("socket.io");
 global.nconf = require('nconf');
 global.logger = require('winston');
-global.passport = require('passport');
 global.Services = require('../../libs/services');
-global.validator = require('express-validator');
 global.validate = require('express-validation');
 global.request = require('request');
-global.store = require('store2');
-global.async = require('async');
 global.randomstring = require("randomstring");
 global.Utils = require('../../libs/utils');
 
@@ -17,7 +12,6 @@ var bodyParser = require('body-parser');
 var morgan = require('morgan');
 var mongoose = require('mongoose');
 var RateLimit = require('express-rate-limit');
-var flog = require('../../libs/flog');
 var http = require("http");
 
 /*Code for firebase*/
@@ -53,7 +47,7 @@ var start = function(callback) {
 		type: '*/*'
 	}));
 
-	app.use(validator());
+	// app.use(validator());
 
 	app.use(function(req, res, next) {
 		res.header("Access-Control-Allow-Origin", "*");
@@ -88,9 +82,10 @@ var start = function(callback) {
 	//app.use('/api/', apiLimiter);
 
 	app.use(function(req, res, next) {
-		console.log("----------------Client Info------------------------------------------")
+		console.log("----------------Client Info-------------------------------------------");
 		console.log("IP=" + req.connection.remoteAddress, "URL=" + req.url, "METHOD=" + req.method);
-		next()
+		console.log("----------------------------------------------------------------------");
+		next();
 	});
 
 	require('../../app/routes/index')(app);
