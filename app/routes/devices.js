@@ -6,7 +6,7 @@ module.exports = function(router) {
 
 		// for getting all devices of a user. url: /api/devices
 		router.route('/')
-			.get(auth.authenticate(), auth.verifyToken, function(req, res, next) {
+			.get(auth.authenticate, function(req, res, next) {
 
 				return res.json({
 					error: false,
@@ -17,7 +17,7 @@ module.exports = function(router) {
 			})
 
 			// to create a new device.
-			.post(auth.authenticate(), auth.verifyToken, function(req, res, next) {
+			.post(auth.authenticate, function(req, res, next) {
 				Device.create(req.body, function (err, device) {
 				    if (err) return next(err);
 
@@ -35,7 +35,7 @@ module.exports = function(router) {
 			})
 
 			// to update a device.
-			.put(auth.authenticate(), auth.verifyToken, Device.authorize("writer"), function(req, res, next) {
+			.put(auth.authenticate, Device.authorize("writer"), function(req, res, next) {
 				Device.findOneAndUpdate({device_id: req.query.device_id}, req.body, (err, doc) => {
 					if (err) return next(err);
 					return res.json({
@@ -47,7 +47,7 @@ module.exports = function(router) {
 			})
 
 			// to delete a device.
-			.delete(auth.authenticate(), auth.verifyToken, Device.authorize("owner"), function(req, res, next) {
+			.delete(auth.authenticate, Device.authorize("owner"), function(req, res, next) {
 				Device.findOneAndRemove({device_id: req.query.device_id}, (err, device) => {
 					if (!device) return next("err");
 					User.findOne({email: res.locals.userInfo.email}, function(err, user) {

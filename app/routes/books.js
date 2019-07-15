@@ -5,7 +5,7 @@ module.exports = function(router) {
 
 
 		router.route('/test1')
-			.get(/*auth.authenticate()*/ auth.verifyToken, function(req, res, next) {
+			.get(/*auth.authenticate()*/ function(req, res, next) {
 
 				console.log("------------------------TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT");
 				console.log(res.locals.userInfo)
