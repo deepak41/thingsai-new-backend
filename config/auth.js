@@ -10,7 +10,7 @@ exports.authenticate = function(req, res, next) {
 			status: 401,
             message: "Token is invalid!"
 		});
-		User.getFull(data.user, function(err, user) {
+		User.getFull(data.user, (err, user) => {
 			if(!user) return next({
 				status: 401,
                 message: "No user found!"
@@ -31,7 +31,7 @@ exports.signToken = function(userId) {
 };
 
 
-exports.verifyFireBaseToken = function(idToken, callback) {
+exports.verifyFirebaseToken = function(idToken, callback) {
 
 	fadmin.auth().verifyIdToken(idToken).then(function(decodedToken) {
 		callback(null, decodedToken);

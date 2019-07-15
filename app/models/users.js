@@ -41,9 +41,9 @@ var UserSchema = new Schema({
 UserSchema.pre('save', function(next) {
 	var user = this;
 	if (this.isModified('password') || this.isNew) {
-		bcrypt.genSalt(10, function(err, salt) {
+		bcrypt.genSalt(10, (err, salt) => {
 			if (err) return next(err);
-			bcrypt.hash(user.password, salt, function(err, hash) {
+			bcrypt.hash(user.password, salt, (err, hash) => {
 				if (err) {
 					return next(err);
 				}
@@ -57,7 +57,7 @@ UserSchema.pre('save', function(next) {
 });
 
 UserSchema.methods.comparePassword = function(passw, cb) {
-	bcrypt.compare(passw, this.password, function(err, isMatch) {
+	bcrypt.compare(passw, this.password, (err, isMatch) => {
 		cb(err, isMatch);
 	});
 };
@@ -75,7 +75,7 @@ module.exports = User;
 
 
 User.getFull = function(id, callback) {
-	User.findOne({_id: id}, function(err, user){
+	User.findOne({_id: id}, (err, user) => {
 		user = user.toObject()
 		delete user.password;
 		delete user.__v;

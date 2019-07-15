@@ -43,7 +43,7 @@ module.exports = function(router) {
 	router.route('/')
 		.put(function(req, res, next) {
 
-			  User.findOne({email: req.body.email}, (err, user) => {
+			User.findOne({email: req.body.email}, (err, user) => {
 			    if (err) return res.status(500).send(err);
 			    	user.password = "hello"
 
