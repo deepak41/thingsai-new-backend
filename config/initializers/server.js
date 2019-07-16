@@ -27,17 +27,7 @@ var start = function(callback) {
 
 	app = express();
 
-	// app.set('view engine', 'ejs');
-
 	global.auth = require("../auth");
-
-	mongoose.connect(nconf.get('database'), {useMongoClient: true}, function(error) {
-		if(error) {
-			error.message  = "[SERVER] Failed to connect to the DB"
-			return callback(error)
-		}
-	  	logger.info('[SERVER] Successfully connected to the DB ' + nconf.get('database'));
-	});
 
 	app.use(morgan('common'));
 	app.use(bodyParser.urlencoded({
@@ -46,8 +36,6 @@ var start = function(callback) {
 	app.use(bodyParser.json({
 		type: '*/*'
 	}));
-
-	// app.use(validator());
 
 	app.use(function(req, res, next) {
 		res.header("Access-Control-Allow-Origin", "*");
@@ -97,18 +85,26 @@ var start = function(callback) {
 	
 	// Error handler
 	app.use(function(err, req, res, next) {
-
 		res.status(err.status || 500);
 		res.json({
 			error: true,
 			message: err.message,
 			data: (app.get('env') === 'development' ? err : null)
 		});
-
 	});
 
-	http.createServer(app).listen(nconf.get('NODE_PORT'), () => {
-		logger.info('[SERVER] The server has started at ' + nconf.get('url') + ":" + nconf.get('NODE_PORT'));
+	// Connect to mongodb
+	mongoose.connect(nconf.get('database'), {useMongoClient: true}, function(error) {
+		if(error) {
+			error.message  = "[SERVER] Failed to connect to the DB"
+			return callback(error)
+		}
+	  	logger.info('[SERVER] Successfully connected to the DB ' + nconf.get('database'));
+
+	  	// Start server
+	  	http.createServer(app).listen(nconf.get('NODE_PORT'), () => {
+			logger.info('[SERVER] The server has started at ' + nconf.get('url') + ":" + nconf.get('NODE_PORT'));
+		});
 	});
 };
 

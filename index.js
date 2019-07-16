@@ -26,8 +26,8 @@ async.waterfall([
     server(callback);
   }],function(err, result) {
     if (err) {
-	  logger.error('[APP] initialization failed');
-      return logger.error(err.message);
+      logger.error(err.message);
+	  return logger.error('[APP] Initialization FAILED');
     }
-	logger.info('[APP] initialized SUCCESSFULLY');		
+	logger.info('[APP] Initialized SUCCESSFULLY');		
 });
