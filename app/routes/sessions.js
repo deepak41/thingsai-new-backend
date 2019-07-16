@@ -53,7 +53,6 @@ module.exports = function (router) {
                     else {
                         var newUser = new User({
                             email: fbuser.email,
-                            password: "qwerty",
                             name: fbuser.name
                         });
                         newUser.save((err, doc) => {

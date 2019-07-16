@@ -10,8 +10,7 @@ var UserSchema = new Schema({
 		required: [true, 'Email field is required']
 	},
 	password: {
-		type: String,
-		required: [true, 'Password field is required']
+		type: String
 	},
 	name: {
 		type: String,
@@ -44,6 +43,7 @@ var UserSchema = new Schema({
 
 UserSchema.pre('save', function(next) {
 	var user = this;
+	if(!user.password) return next()
 	if (this.isModified('password') || this.isNew) {
 		bcrypt.genSalt(10, (err, salt) => {
 			if (err) return next(err);
