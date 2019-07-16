@@ -22,7 +22,7 @@ module.exports = function(router) {
 				if (err) return next(err);
 				return res.json({
 					error: false,
-					message: "User created successfully.",
+					message: "User registered successfully!",
 					data: doc
 				})
 			});

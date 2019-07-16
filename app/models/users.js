@@ -10,12 +10,12 @@ var UserSchema = new Schema({
 		required: [true, 'Email field is required']
 	},
 	password: {
-		type: String
+		type: String,
+		required: [true, 'Password field is required']
 	},
 	name: {
 		type: String,
-		required: false,
-		default: "Enter your name"
+		required: [true, 'Name field is required']
 	},
 	phone_no: {
 		type: Number,
