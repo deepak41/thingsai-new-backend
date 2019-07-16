@@ -1,9 +1,7 @@
 global.express = require('express');
 global.nconf = require('nconf');
 global.logger = require('winston');
-global.Services = require('../../libs/services');
 global.validate = require('express-validation');
-global.request = require('request');
 global.randomstring = require("randomstring");
 global.Utils = require('../../libs/utils');
 
