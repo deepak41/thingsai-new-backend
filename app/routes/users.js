@@ -8,12 +8,7 @@ module.exports = function(router) {
 	// for creating a new user, url /api/users/
 	router.route('/')
 		.post(function(req, res, next) {
-			var newUser = new User({
-				email: req.body.email,
-				password: req.body.password,
-				name: req.body.name
-			});
-			newUser.save((err, doc) => {
+			User.create(req.body, (err, doc) => {
 				if(err && err.code == 11000) return next({
 	                status: 401,
 	                message: "Email is already registered!",
@@ -25,7 +20,7 @@ module.exports = function(router) {
 					message: "User registered successfully!",
 					data: doc
 				})
-			});
+			})
 		});
 
 
