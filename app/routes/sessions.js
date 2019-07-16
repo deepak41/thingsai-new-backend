@@ -58,17 +58,12 @@ module.exports = function (router) {
                         });
                         newUser.save((err, doc) => {
                             if (err) return next(err);
-
-                            console.log("5555555555555555555555555555555555555555555555555")
-                            console.log(doc)
-
                             var token = auth.signToken(doc._id);
-                            return res.json({
+                            res.json({
                                 error: false,
                                 token: token,
                                 data: doc
                             });
-
                         });
                     }
                 });
