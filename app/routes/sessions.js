@@ -42,7 +42,15 @@ module.exports = function (router) {
                 });
 
                 User.findOne({email: fbuser.email}, (err, user) => {
-                    if (!user) {
+                    if(user) {
+                        var token = auth.signToken(user._id);
+                        res.json({
+                            error: false,
+                            token: token,
+                            data: user
+                        });
+                    }
+                    else {
                         var newUser = new User({
                             email: fbuser.email,
                             password: "qwerty",
@@ -63,12 +71,6 @@ module.exports = function (router) {
 
                         });
                     }
-                    var token = auth.signToken(user._id);
-                    res.json({
-                        error: false,
-                        token: token,
-                        data: user
-                    });
                 });
             })
         });
