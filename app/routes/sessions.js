@@ -35,16 +35,34 @@ module.exports = function (router) {
     // This will handle the url calls for /api/sessions/firebaselogin
     router.route('/firebaselogin')
        .post(function (req, res, next) {
-            auth.verifyFirebaseToken(req.body.idToken, (err, user) => {
+            auth.verifyFirebaseToken(req.body.idToken, (err, fbuser) => {
                 if(err) return next({
                     status: 401,
                     message: "Invalid email or password!"
                 });
-                User.findOne({email: user.email}, (err, user) => {
-                    if (!user) return next({
-                        status: 401,
-                        message: "Invalid email or password!"
-                    });
+
+                User.findOne({email: fbuser.email}, (err, user) => {
+                    if (!user) {
+                        var newUser = new User({
+                            email: fbuser.email,
+                            password: "qwerty",
+                            name: fbuser.name
+                        });
+                        newUser.save((err, doc) => {
+                            if (err) return next(err);
+
+                            console.log("5555555555555555555555555555555555555555555555555")
+                            console.log(doc)
+
+                            var token = auth.signToken(doc._id);
+                            return res.json({
+                                error: false,
+                                token: token,
+                                data: doc
+                            });
+
+                        });
+                    }
                     var token = auth.signToken(user._id);
                     res.json({
                         error: false,
