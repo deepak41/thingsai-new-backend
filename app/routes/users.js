@@ -8,16 +8,23 @@ module.exports = function(router) {
 	// for creating a new user, url /api/users/
 	router.route('/')
 		.post(function(req, res, next) {
-
 			var newUser = new User({
 				email: req.body.email,
 				password: req.body.password,
 				name: req.body.name
 			});
-
-			newUser.save((err) => {
+			newUser.save((err, doc) => {
+				if(err && err.code == 11000) return next({
+	                status: 401,
+	                message: "Email is already registered!",
+	                email: req.body.email
+	            });
 				if (err) return next(err);
-				return res.status(200).json(newUser);
+				return res.json({
+					error: false,
+					message: "User created successfully.",
+					data: doc
+				})
 			});
 		});
 
@@ -39,26 +46,32 @@ module.exports = function(router) {
 			
 		});
 
-	// for updating user, url /api/users/
+	// to update a user, url /api/users/
 	router.route('/')
+		.put(auth.authenticate, function(req, res, next) {
+			if(res.locals.userInfo.email != req.query.email) return next("err232");
+			User.findOneAndUpdate({email: req.query.email}, req.body, (err, doc) => {
+				if (err) return next(err);
+				return res.json({
+					error: false,
+					message: "User updated successfully."
+				})
+			});		
+		});
+
+	router.route('/update-by-admin')
 		.put(function(req, res, next) {
-
-			User.findOne({email: req.body.email}, (err, user) => {
-			    if (err) return res.status(500).send(err);
-			    	user.password = "hello"
-
-					user.save((err) => {
-						if (err) return next(err);
-						return res.status(200).json(user);
-					});
-
-			});
-
-			  
-			
+			User.findOneAndUpdate({email: req.query.email}, req.body, (err, doc) => {
+				if (err) return next(err);
+				return res.json({
+					error: false,
+					message: "User updated successfully."
+				})
+			});		
 		});
 
 
+	// for sending password reset mail, url /api/users/password/forgot
 	router.route('/password/forgot')
 		.post(function(req, res, next) {
 
@@ -105,7 +118,7 @@ module.exports = function(router) {
 		});
 
 
-
+	// for resetting the password, url /api/users/password/reset/{token}
 	router.route('/password/reset/:token')
 		.get(function(req, res, next) {
 			User.findOne({

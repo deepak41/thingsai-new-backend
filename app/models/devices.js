@@ -11,7 +11,11 @@ var DeviceSchema = new mongoose.Schema({
 		type: String,
 		required: false,
 		default: "Device Name"
-	}
+	},
+	slaves : { 
+		type : Array , 
+		"default" : [] 
+	},
 
 }, {timestamps: true});
 

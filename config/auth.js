@@ -8,13 +8,14 @@ exports.authenticate = function(req, res, next) {
 	passport.authenticate('jwt', {session: false}, (data) => {
 		if(!data) return next({
 			status: 401,
-            message: "Token is invalid!"
+            message: "Authorisation token is invalid!"
 		});
 		User.getFull(data.user, (err, user) => {
 			if(!user) return next({
 				status: 401,
-                message: "No user found!"
+                message: "Authorisation token is invalid!"
 			});
+			User.updateLastActive(user.email);
 			res.locals.userInfo = user;
 			next();
 		});

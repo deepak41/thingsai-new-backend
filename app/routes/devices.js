@@ -4,7 +4,7 @@ var User = require("../models/users");
 module.exports = function(router) {
 	'use strict';
 
-		// for getting all devices of a user. url: /api/devices
+		// for getting all devices of a user, url: /api/devices
 		router.route('/')
 			.get(auth.authenticate, function(req, res, next) {
 
@@ -67,5 +67,26 @@ module.exports = function(router) {
 					});
 				});												
 			});
+
+
+
+		// to create a new device.
+		router.route('/create-by-admin')
+			.post(function(req, res, next) {
+				Device.create(req.body, (err, device) => {
+				    if (err) return next(err);
+
+				    User.findOne({email: req.query.email}, (err, user) => {
+						user.devices.push({device_id: device.device_id, role: "owner"});
+						user.save((err, test) => {
+							if (err) return next(err);
+							return res.json({
+								error: false,
+								message: "Device created successfully."
+							})
+						});
+					});
+			    })
+			})
 	
 }

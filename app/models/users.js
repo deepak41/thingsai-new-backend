@@ -21,6 +21,10 @@ var UserSchema = new Schema({
 		type: Number,
 		default: 0
 	},
+	last_active: {
+		type: Number,
+		default: parseInt(Date.now() / 1000)
+	},
 	user_image: {
 	    type: String,
 	    default: 'Add an image'
@@ -36,7 +40,7 @@ var UserSchema = new Schema({
 	resetPasswordToken: String,
 	resetPasswordExpires: Date
 	
-});
+}, {timestamps: true});
 
 UserSchema.pre('save', function(next) {
 	var user = this;
@@ -44,9 +48,7 @@ UserSchema.pre('save', function(next) {
 		bcrypt.genSalt(10, (err, salt) => {
 			if (err) return next(err);
 			bcrypt.hash(user.password, salt, (err, hash) => {
-				if (err) {
-					return next(err);
-				}
+				if (err) return next(err);
 				user.password = hash;
 				next();
 			});
@@ -76,6 +78,7 @@ module.exports = User;
 
 User.getFull = function(id, callback) {
 	User.findOne({_id: id}, (err, user) => {
+		if(!user) return callback(err, user); 
 		user = user.toObject()
 		delete user.password;
 		delete user.__v;
@@ -83,5 +86,12 @@ User.getFull = function(id, callback) {
 		delete user.resetPasswordToken
 		return callback(err, user)
 	});
+}
+
+
+User.updateLastActive = function(email) {
+	User.findOneAndUpdate({email: email}, {last_active: parseInt(Date.now()/1000)}, (err, doc) => {
+		return doc;		
+	});	
 }
 
