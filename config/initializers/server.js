@@ -4,8 +4,9 @@ global.logger = require('winston');
 global.validate = require('express-validation');
 global.randomstring = require("randomstring");
 global.Utils = require('../../libs/utils');
+global.request = require('request');
+global.path = require('path');
 
-var path = require('path');
 var bodyParser = require('body-parser');
 var morgan = require('morgan');
 var mongoose = require('mongoose');
@@ -68,9 +69,9 @@ var start = function(callback) {
 	//app.use('/api/', apiLimiter);
 
 	app.use(function(req, res, next) {
-		console.log("----------------Client Info-------------------------------------------");
-		console.log("IP=" + req.connection.remoteAddress, "URL=" + req.url, "METHOD=" + req.method);
-		console.log("----------------------------------------------------------------------");
+		Utils.findLocationByIp(req.ip, req._startTime, function(err, data) {
+			Utils.logIntoFile(data)
+		})
 		next();
 	});
 
