@@ -27,13 +27,11 @@ Utils.sendPasswordResetMail = function(rpToken, email, name, callback) {
 
 
 Utils.findLocationByIp = function(ip, time, callback) {
+	time = time.toLocaleString();
 	var access_key = "9d07c3ddbbcf20c5dbe5d4a5fae09c14";
 	// ip = "115.99.16.198";
 
-	if (ip.substr(0, 7) == "::ffff:") {
-        ip = ip.substr(7)
-        console.log(ip)
-    }
+	if(ip.substr(0, 7) == "::ffff:") ip = ip.substr(7);
 
 	request.get({
 		url: "http://api.ipstack.com/" + ip + "?access_key=" + access_key	
@@ -44,6 +42,7 @@ Utils.findLocationByIp = function(ip, time, callback) {
 		result={}
 		result.ip = body.ip;
 		result.city = body.city;
+		result.region_name = body.region_name;
 		result.country_name = body.country_name;
 		result.continent_name = body.continent_name;
 		result.latitude = body.latitude;
