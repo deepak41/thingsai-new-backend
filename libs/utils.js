@@ -36,7 +36,7 @@ Utils.findLocationByIp = function(ip, time, callback) {
 	request.get({
 		url: "http://api.ipstack.com/" + ip + "?access_key=" + access_key	
 	}, 
-	function(error, response, body) {
+	function(err, response, body) {
 		body = JSON.parse(body);
 
 		result={}
@@ -49,7 +49,7 @@ Utils.findLocationByIp = function(ip, time, callback) {
 		result.longitude = body.longitude;
 		result.time = time;
 
-		callback(error, result);
+		callback(err, result);
 	});	
 }
 

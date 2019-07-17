@@ -69,7 +69,7 @@ var start = function(callback) {
 	//app.use('/api/', apiLimiter);
 
 	app.use(function(req, res, next) {
-		if(nconf.get('NODE_ENV') !== 'development') {
+		if(nconf.get('NODE_ENV') == 'development') {
 			Utils.findLocationByIp(req.ip, req._startTime, function(err, data) {
 				Utils.logIntoFile(data)
 			})
@@ -95,10 +95,10 @@ var start = function(callback) {
 	});
 
 	// Connect to mongodb
-	mongoose.connect(nconf.get('database'), {useMongoClient: true}, function(error) {
-		if(error) {
-			error.message  = "[SERVER] Failed to connect to the DB"
-			return callback(error)
+	mongoose.connect(nconf.get('database'), {useMongoClient: true}, function(err) {
+		if(err) {
+			err.message  = "[SERVER] Failed to connect to the DB"
+			return callback(err)
 		}
 	  	logger.info('[SERVER] Successfully connected to the DB ' + nconf.get('database'));
 
