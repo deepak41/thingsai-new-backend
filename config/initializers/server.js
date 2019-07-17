@@ -69,7 +69,7 @@ var start = function(callback) {
 	//app.use('/api/', apiLimiter);
 
 	app.use(function(req, res, next) {
-		if(nconf.get('NODE_ENV') == 'development') {
+		if(nconf.get('NODE_ENV') === 'production') {
 			Utils.findLocationByIp(req.ip, req._startTime, function(err, data) {
 				Utils.logIntoFile(data)
 			})
