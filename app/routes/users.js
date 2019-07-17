@@ -78,12 +78,10 @@ module.exports = function(router) {
 				function(rpToken, callback) {
 					User.findOne({email: req.body.email}, (err, user) => {
 						if(err) return next(err);
-						if (!user) {
-							res.json({
-								error: true,
-								message: "No account with that email address exists."
-							});
-						}
+						if (!user) return next({
+							status: 401,
+							message: "No account with that email address exists."
+						});
 						user.resetPasswordToken = rpToken;
 						user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
 
@@ -121,13 +119,10 @@ module.exports = function(router) {
 				resetPasswordExpires: {$gt: Date.now()}
 			}, (err, user) => {
 				if (err) return next(err);
-
-				if (!user) {
-					return res.json({
-						error: true,
-						message: "The link is either invalid or has expired."
-					});
-				}
+				if (!user) return next({
+					status: 401,
+					message: "The link is either invalid or has expired."
+				});
 				res.json({
 					error: false,
 					message: "The link is active."
@@ -141,28 +136,21 @@ module.exports = function(router) {
 				resetPasswordExpires: {$gt: Date.now()}
 			}, (err, user) => {
 				if (err) return next(err);
-
-				if (!user) {
-
+				if (!user) return next({
+					status: 401,
+					message: "The link is either invalid or has expired."
+				});
+				user.password = req.body.password;
+				user.resetPasswordToken = undefined;
+				user.resetPasswordExpires = undefined;
+				user.save((err) => {
+					if (err) next(err);
 					res.json({
-						error: true,
-						message: "The link is either invalid or has expired."
-					});
-				} else {
-					user.password = req.body.password;
-					user.resetPasswordToken = undefined;
-					user.resetPasswordExpires = undefined;
-					user.save((err) => {
-						if (err) next(err);
-						res.json({
-							error: false,
-							message: "Password has been changed successfully."
-						})
-
-					});
-				}
+						error: false,
+						message: "Password has been changed successfully."
+					})
+				});
 			});
-
-	});
+		});
 
 };
