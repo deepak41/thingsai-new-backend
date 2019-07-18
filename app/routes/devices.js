@@ -4,16 +4,36 @@ var User = require("../models/users");
 module.exports = function(router) {
 	'use strict';
 
-		// for getting all devices of a user, url: /api/devices
+		// to find a device, url: /api/devices
 		router.route('/')
-			.get(auth.authenticate, function(req, res, next) {
-
-				return res.json({
-					error: false,
-					message: "Devices found successfully",
-					data: res.locals.userInfo.devices
-				});
-
+			.get(auth.authenticate, Device.authorize("reader"), function(req, res, next) {
+				Device.findOne({device_id: req.query.device_id}, (err, device) => {
+					if (err) return next(err);
+					if(device) {
+						res.json({
+							error: false,
+							message: "Device found successfully.",
+							data: device
+						})	
+					}
+					else {
+						User.findOne({email: res.locals.userInfo.email}, (err, user) => {
+							user.devices.find((obj, index) => {
+							    if (obj.device_id == req.query.device_id) {
+							        user.devices.splice(index, 1);
+							        return true; // stop searching
+							    }
+							});
+							user.save((err, test) => {
+								if (err) return next(err);
+								return next({
+									status: 404,
+									message: "No Device found!"
+								});
+							});
+						});
+					}
+				});	
 			})
 
 			// to create a new device.
@@ -69,8 +89,18 @@ module.exports = function(router) {
 			});
 
 
+		// to get all devices of a user, url: /api/devices/all-devices
+		router.route('/all-devices')
+			.get(auth.authenticate, function(req, res, next) {
+				return res.json({
+					error: false,
+					message: "Devices found successfully",
+					data: res.locals.userInfo.devices
+				});
 
-		// to create a new device.
+			})
+
+		// to create a new device by admin
 		router.route('/create-by-admin')
 			.post(function(req, res, next) {
 				Device.create(req.body, (err, device) => {
@@ -88,5 +118,7 @@ module.exports = function(router) {
 					});
 			    })
 			})
+
+
 	
 }

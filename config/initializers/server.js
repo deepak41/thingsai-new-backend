@@ -80,9 +80,7 @@ var start = function(callback) {
 	require('../../app/routes/index')(app);
 	logger.info('[SERVER] Initialized routes');
 
-	app.use('/static', express.static(path.join(__dirname, '../../staticfiles')));
 	app.use('/public', express.static(path.join(__dirname, '../../public')));
-	app.use('/reports', express.static(path.join(__dirname, '../../reports')));
 	
 	// Error handler
 	app.use(function(err, req, res, next) {

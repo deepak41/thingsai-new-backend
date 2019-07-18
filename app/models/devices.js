@@ -34,7 +34,11 @@ Device.authorize = function(requiredRole) {
         (req, res, next) => {
         	var arr = res.locals.userInfo.devices;
         	var device = arr.find(obj => obj.device_id == req.query.device_id);
-			if(!device) return next("err1");
+			if(!device) return next({
+				status: 403,
+				message: "You dont't have permission to access this device!",
+				device_id: req.query.device_id
+			});
 
             if(requiredRole == "reader") {
             	next()
@@ -45,7 +49,11 @@ Device.authorize = function(requiredRole) {
             else if(requiredRole == "owner" && device.role == "owner") {
             	next()
             }
-            else next("err222")
+            else  next({
+				status: 403,
+				message: "You dont't have the required permission!",
+				device_id: req.query.device_id
+			});
         }
     ];
 }
