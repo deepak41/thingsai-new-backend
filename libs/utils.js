@@ -26,11 +26,9 @@ Utils.sendPasswordResetMail = function(rpToken, email, name, callback) {
 }
 
 
-Utils.findLocationByIp = function(ip, path, time, callback) {
+Utils.findLocationByIp = function(ip, path, method, time, callback) {
 	time = time.toLocaleString();
 	var access_key = "9d07c3ddbbcf20c5dbe5d4a5fae09c14";
-	// ip = "115.99.16.198";
-
 	if(ip.substr(0, 7) == "::ffff:") ip = ip.substr(7);
 
 	request.get({
@@ -40,15 +38,16 @@ Utils.findLocationByIp = function(ip, path, time, callback) {
 		body = JSON.parse(body);
 
 		result={}
-		result.ip = body.ip;
+		result.ip = ip;
 		result.city = body.city;
 		result.region_name = body.region_name;
 		result.country_name = body.country_name;
 		result.continent_name = body.continent_name;
 		result.latitude = body.latitude;
 		result.longitude = body.longitude;
+		result.method = method;
 		result.path = path;
-		result.time = time;
+		result.time = time + " IST";
 
 		callback(err, result);
 	});	
