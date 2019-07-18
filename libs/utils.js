@@ -2,8 +2,8 @@ require("./mailin.js");
 var fs = require('fs');
 var util = require('util');
 
-var Utils = module.exports = {};
 
+var Utils = module.exports = {};
 
 Utils.sendPasswordResetMail = function(rpToken, email, name, callback) {
 	var client = new Mailin("https://api.sendinblue.com/v2.0","rBIy6wFgPHqxCdcL");
@@ -25,34 +25,36 @@ Utils.sendPasswordResetMail = function(rpToken, email, name, callback) {
     });
 }
 
-
-Utils.findLocationByIp = function(ip, path, method, time, callback) {
-	time = time.toLocaleString();
-	var access_key = "9d07c3ddbbcf20c5dbe5d4a5fae09c14";
+Utils.getClientByIp = function(ip, path, method, time, callback) {
+	time = time.toLocaleString() + " IST";
 	if(ip.substr(0, 7) == "::ffff:") ip = ip.substr(7);
+	var clientInfo = {ip: ip};
+	Utils.findLocationByIp(clientInfo, function(err, result) {
+		result.method = method;
+		result.path = path;
+		result.time = time;
+		callback(err, result)
+	})
+}
 
+Utils.findLocationByIp = function(clientInfo, callback) {
+	var access_key = "9d07c3ddbbcf20c5dbe5d4a5fae09c14";
 	request.get({
-		url: "http://api.ipstack.com/" + ip + "?access_key=" + access_key	
+		url: "http://api.ipstack.com/" + clientInfo.ip + "?access_key=" + access_key	
 	}, 
 	function(err, response, body) {
 		body = JSON.parse(body);
 
-		result={}
-		result.ip = ip;
-		result.city = body.city;
-		result.region_name = body.region_name;
-		result.country_name = body.country_name;
-		result.continent_name = body.continent_name;
-		result.latitude = body.latitude;
-		result.longitude = body.longitude;
-		result.method = method;
-		result.path = path;
-		result.time = time + " IST";
+		clientInfo.city = body.city;
+		clientInfo.region_name = body.region_name;
+		clientInfo.country_name = body.country_name;
+		clientInfo.continent_name = body.continent_name;
+		clientInfo.latitude = body.latitude;
+		clientInfo.longitude = body.longitude;
 
-		callback(err, result);
+		callback(err, clientInfo);
 	});	
 }
-
 
 Utils.logIntoFile = function(data) {
 	if(!fs.existsSync(path.join(__dirname, '../logs'))) 
