@@ -70,7 +70,7 @@ var start = function(callback) {
 
 	app.use(function(req, res, next) {
 		if(nconf.get('NODE_ENV') === 'production') {
-			Utils.findLocationByIp(req.ip, req._startTime, function(err, data) {
+			Utils.findLocationByIp(req.ip, req.path, req._startTime, function(err, data) {
 				Utils.logIntoFile(data)
 			})
 		}
