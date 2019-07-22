@@ -10,7 +10,7 @@ module.exports = function(router) {
 		.post(function(req, res, next) {
 			User.create(req.body, (err, doc) => {
 				if(err && err.code == 11000) return next({
-	                status: 401,
+	                status: 409,
 	                message: "Email is already registered!",
 	                email: req.body.email
 	            });
@@ -44,12 +44,19 @@ module.exports = function(router) {
 	// to update a user, url /api/users/
 	router.route('/')
 		.put(auth.authenticate, function(req, res, next) {
-			if(res.locals.userInfo.email != req.query.email) return next("err232");
-			User.findOneAndUpdate({email: req.query.email}, req.body, (err, doc) => {
-				if (err) return next(err);
+			delete req.body.last_active;
+			delete req.body.is_verified;
+			delete req.body.devices;
+			User.findOneAndUpdate({email: res.locals.userInfo.email}, req.body, {new: true}, (err, doc) => {
+				if(err) return next(err);
+				if(!doc) return next({
+	                status: 404,
+	                message: "No account with that email address exists!"
+	            });
 				return res.json({
 					error: false,
-					message: "User updated successfully."
+					message: "User updated successfully.",
+					data: doc
 				})
 			});		
 		});
@@ -79,7 +86,7 @@ module.exports = function(router) {
 					User.findOne({email: req.body.email}, (err, user) => {
 						if(err) return next(err);
 						if (!user) return next({
-							status: 401,
+							status: 404,
 							message: "No account with that email address exists."
 						});
 						user.resetPasswordToken = rpToken;
@@ -120,7 +127,7 @@ module.exports = function(router) {
 			}, (err, user) => {
 				if (err) return next(err);
 				if (!user) return next({
-					status: 401,
+					status: 400,
 					message: "The link is either invalid or has expired."
 				});
 				res.json({
@@ -137,7 +144,7 @@ module.exports = function(router) {
 			}, (err, user) => {
 				if (err) return next(err);
 				if (!user) return next({
-					status: 401,
+					status: 400,
 					message: "The link is either invalid or has expired."
 				});
 				user.password = req.body.password;
