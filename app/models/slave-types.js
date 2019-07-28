@@ -37,9 +37,7 @@ module.exports = SlaveType;
 
 
 SlaveType.authorize = function(req, res, next) {
-
 	var slave_type_id = req.query.slave_type_id || req.body.type;
-
 	SlaveType.findOne({slave_type_id: slave_type_id}, (err, slave) => {
 		if(err) return next(err);
 		if(!slave || slave.owner != res.locals.userInfo.email) return next({
