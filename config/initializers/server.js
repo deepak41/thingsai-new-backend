@@ -76,7 +76,7 @@ var start = function(callback) {
 		}
 		next();
 	};
-	app.use(getClient);
+	// app.use(getClient);
 
 	require('../../app/routes/index')(app);
 	logger.info('[SERVER] Initialized routes');
