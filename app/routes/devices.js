@@ -39,15 +39,24 @@ module.exports = function(router) {
 			// to create a new device.
 			.post(auth.authenticate, function(req, res, next) {
 				Device.create(req.body, (err, device) => {
+					if(err && err.code == 11000) return next({
+		                status: 409,
+		                message: "Device ID is already registered!",
+		                device_id: req.body.device_id
+		            });
 				    if (err) return next(err);
-
 				    User.findOne({email: res.locals.userInfo.email}, (err, user) => {
-						user.devices.push({device_id: device.device_id, role: "owner"});
-						user.save((err, test) => {
+						user.devices = user.devices.concat([{
+							role: "owner",
+							name: device.name,
+							device_id: device.device_id
+						}]);
+						user.save((err, user) => {
 							if (err) return next(err);
 							return res.json({
 								error: false,
-								message: "Device created successfully."
+								message: "Device created successfully.",
+								data: req.body.device_id
 							})
 						});
 					});
