@@ -112,7 +112,7 @@ def createSlave(slave):
 	if 'energy' not in slave:
 		slave["energy"] = {}
 
-	url = localhost + "/api/slaves"
+	url = localhost + "/api/slave-types/create-by-admin"
 
 	data = {
 	    "slave_type_id": str(slave["_id"]),

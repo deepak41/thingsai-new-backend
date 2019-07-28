@@ -36,7 +36,7 @@ Device.authorize = function(requiredRole) {
         	var device = arr.find(obj => obj.device_id == req.query.device_id);
 			if(!device) return next({
 				status: 403,
-				message: "You dont't have permission to access this device!",
+				message: "You don't have permission to access this device!",
 				device_id: req.query.device_id
 			});
 
@@ -51,7 +51,7 @@ Device.authorize = function(requiredRole) {
             }
             else  next({
 				status: 403,
-				message: "You dont't have the required permission!",
+				message: "You dont't have the required permissions!",
 				device_id: req.query.device_id
 			});
         }
