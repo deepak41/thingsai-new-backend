@@ -1,5 +1,6 @@
 var Device = require("../models/devices");
 var User = require("../models/users");
+var SlaveType = require("../models/slave-types");
 
 module.exports = function(router) {
 	'use strict';
@@ -108,6 +109,37 @@ module.exports = function(router) {
 				});
 
 			})
+
+
+		// to add a slave, url: /api/devices/edit-slaves
+		router.route('/edit-slaves')
+			.post(auth.authenticate, Device.authorize("writer"), SlaveType.authorize, function(req, res, next) {
+				Device.findOne({device_id: req.query.device_id}, (err, device) => {
+					if(err) return next(err);
+					if(!device) return next({
+						status: 404,
+		                message: "Device does not exist!"
+					});
+					var slave = device.slaves.find(obj => obj.slave_id == req.body.slave_id);
+					if(slave) return next({
+						status: 409,
+		                message: "Slave ID is already in use!"
+					});
+					device.slaves = device.slaves.concat([{
+						type: req.body.type,
+						slave_id: req.body.slave_id
+					}]);
+					device.save((err, doc) => {
+						if(err) return next(err);
+						return res.json({
+							error: false,
+							message: "Slave added successfully.",
+							data: doc
+						})
+					});
+				});
+			})
+
 
 		// to create a new device by admin
 		router.route('/create-by-admin')
