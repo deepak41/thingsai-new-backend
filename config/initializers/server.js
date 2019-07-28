@@ -68,14 +68,15 @@ var start = function(callback) {
 	});
 	//app.use('/api/', apiLimiter);
 
-	app.use(function(req, res, next) {
+	var getClient = function(req, res, next) {
 		if(nconf.get('NODE_ENV') === 'production') {
 			Utils.getClientByIp(req.ip, req.path, req.method, req._startTime, function(err, data) {
 				Utils.logIntoFile(err || data)
 			})
 		}
 		next();
-	});
+	};
+	// app.use(getClient);
 
 	require('../../app/routes/index')(app);
 	logger.info('[SERVER] Initialized routes');
