@@ -118,7 +118,7 @@ module.exports = function(router) {
 					if(err) return next(err);
 					if(!device) return next({
 						status: 404,
-		                message: "Device does not exist!"
+		                message: "Device ID is invalid!"
 					});
 					var slave = device.slaves.find(obj => obj.slave_id == req.body.slave_id);
 					if(slave) return next({
@@ -141,14 +141,46 @@ module.exports = function(router) {
 			})
 
 
+			// to remove a slave,
+			.delete(auth.authenticate, Device.authorize("writer"), function(req, res, next) {
+				Device.findOne({device_id: req.query.device_id}, (err, device) => {
+					if(err) return next(err);
+					if(!device) return next({
+						status: 404,
+		                message: "Device ID is invalid!"
+					});
+					var output = device.slaves.find((obj, index) => {
+					    if(obj.slave_id == req.query.slave_id) {
+					        device.slaves.splice(index, 1);
+					        return true; // stop searching
+					    }
+					});
+					if(!output) return next({
+						status: 404,
+		                message: "Slave ID is invalid!"
+		            }); 
+					device.save((err) => {
+						if(err) return next(err);
+						res.json({
+							error: false,
+							message: "Slave removed successfully.",
+							data: output
+						})
+					});
+				});									
+			});
+
+
 		// to create a new device by admin
 		router.route('/create-by-admin')
 			.post(function(req, res, next) {
 				Device.create(req.body, (err, device) => {
 				    if (err) return next(err);
-
 				    User.findOne({email: req.query.email}, (err, user) => {
-						user.devices.push({device_id: device.device_id, role: "owner"});
+						user.devices = user.devices.concat([{
+							role: "owner",
+							device_id: device.device_id
+						}]);
 						user.save((err, test) => {
 							if (err) return next(err);
 							return res.json({
