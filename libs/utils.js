@@ -64,3 +64,16 @@ Utils.logIntoFile = function(data) {
 	log_file.write(util.format(data) + '\n');
 }
 
+Utils.pagination = function(req, res, next) {
+	var pageno = 1;
+	var pagesize = 500;
+	if (!Utils.isEmptyObject(req.query)) {
+		pageno = parseInt(req.query.pageno || 1);
+		if (pageno == 0) pageno = 1;
+		pagesize = parseInt(req.query.pagesize || 20);
+		if (pagesize == 0) pagesize = 500;
+	}
+	res.locals.pageno = pageno;
+	res.locals.pagesize = pagesize;
+	next();
+}
