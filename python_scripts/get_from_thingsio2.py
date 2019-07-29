@@ -114,6 +114,8 @@ def createDevice(email, device):
 
 def getDeviceData(device_id, email):
 	device_data = db.device_data.find({"device_id": device_id})
+	print("5555555555555555555555555555555555555555555555555555555555555555555555555555")
+	print(device_id)
 	device_data = list(device_data)
 
 	if(len(device_data)>0):
