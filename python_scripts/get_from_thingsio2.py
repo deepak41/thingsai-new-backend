@@ -21,7 +21,7 @@ def getUsers():
 
 	if len(users) != 0:
 		for user in users:
-			if user["email"] not in ["balub997@gmail.com", "thingsioai@gmail.com", "testmailid80@gmail.com", "arsutukur@gmail.com", "shahabaaz288@gmail.com", "mereddy6542@gmail.com", "bsrr1953@gmail.com"]:
+			if user["email"] not in ["balub997@gmail.com", "thingsioai@gmail.com", "testmailid80@gmail.com", "arsutukur@gmail.com", "shahabaaz288@gmail.com", "mereddy6542@gmail.com", "bsrr1953@gmail.com", "vishaltalukar66@gmail.com"]:
 				print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ EMAIL @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
 				print(user["email"])
 
