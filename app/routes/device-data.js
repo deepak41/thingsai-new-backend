@@ -28,7 +28,7 @@ module.exports = function(router) {
 				DeviceData.find({
 					device_id: req.query.device_id, 
 					slave_id: req.query.slave_id
-				}, { skip: 1, limit: 20 }, (err, data) => {
+				}, { $skip: 1, $limit: 20 }, (err, data) => {
 					if(err) return next(err);
 					res.json({
 						error: false,
