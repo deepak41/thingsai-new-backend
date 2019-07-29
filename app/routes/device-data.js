@@ -24,18 +24,18 @@ module.exports = function(router) {
 
 		// to find device data, url: /api/device-data
 		router.route('/')
-			.get(auth.authenticate, Device.authorize("reader"), Device.checkSlave, function(req, res, next) {
-				DeviceData.find({
+			.get(auth.authenticate, Device.authorize("reader"), Device.checkSlave, Utils.pagination, function(req, res, next) {
+				DeviceData.paginate({
 					device_id: req.query.device_id, 
 					slave_id: req.query.slave_id
-				}, { $skip: 1, $limit: 20 }, (err, data) => {
+				}, { offset: res.locals.offset, limit: res.locals.pagesize }, function(err, result) {
 					if(err) return next(err);
 					res.json({
 						error: false,
 						message: "Device Data found successfully.",
-						data: data
+						data: result.docs
 					})
-				});	
+				});
 			});
 
 

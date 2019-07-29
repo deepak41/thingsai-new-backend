@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+var mongoosePaginate = require('mongoose-paginate');
 
 
 var DeviceDataSchema = new mongoose.Schema({
@@ -23,6 +24,8 @@ var DeviceDataSchema = new mongoose.Schema({
 		default: parseInt(Date.now() / 1000)
 	}
 }, {timestamps: true});
+
+DeviceDataSchema.plugin(mongoosePaginate);
 
 DeviceDataSchema.methods.toJSON = function() {
 	var obj = this.toObject()
