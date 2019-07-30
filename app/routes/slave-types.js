@@ -53,6 +53,20 @@ module.exports = function(router) {
 			});
 
 
+		// to get all slaves of a user, url: /api/slave-types/all-slaves
+		router.route('/all-slaves')
+			.get(auth.authenticate, function(req, res, next) {
+				SlaveType.find({owner: res.locals.userInfo.email}, (err, slaves) => {
+					if(err) return next(err);
+					res.json({
+						error: false,
+						message: "Slaves found successfully!",
+						data: slaves
+					});
+				})
+			});
+
+
 		router.route('/create-by-admin')
 			.post(function(req, res, next) {
 				SlaveType.create(req.body, (err, slaveType) => {

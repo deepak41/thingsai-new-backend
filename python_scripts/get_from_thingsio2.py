@@ -73,11 +73,16 @@ def getDevices(site_id):
 def createUser(email, name):
 	url = localhost + "/api/users/"
 
+	# data = {
+	#     "email": email,
+	#     "name": name,
+	#     "password": "qwerty"
+	# }
 	data = {
 	    "email": email,
-	    "name": name,
-	    "password": "qwerty"
+	    "name": name
 	}
+
 	data_json = json.dumps(data)
 
 	headers = {

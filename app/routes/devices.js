@@ -49,7 +49,6 @@ module.exports = function(router) {
 				    User.findOne({email: res.locals.userInfo.email}, (err, user) => {
 						user.devices = user.devices.concat([{
 							role: "owner",
-							name: device.name,
 							device_id: device.device_id
 						}]);
 						user.save((err, user) => {
@@ -102,16 +101,22 @@ module.exports = function(router) {
 		// to get all devices of a user, url: /api/devices/all-devices
 		router.route('/all-devices')
 			.get(auth.authenticate, function(req, res, next) {
-				return res.json({
-					error: false,
-					message: "Devices found successfully",
-					data: res.locals.userInfo.devices
+				var devices = []; 
+				res.locals.userInfo.devices.forEach(function(value){
+					devices.push(value.device_id);
 				});
+				Device.find({device_id: {$in: devices}}, (err, all_devices) => {
+					if(err) return next(err);
+					res.json({
+						error: false,
+						message: "Devices found successfully!",
+						data: all_devices
+					});
+				})
+			});
 
-			})
 
-
-		// to add a slave, url: /api/devices/edit-slaves
+		// to add a slave to a device, url: /api/devices/edit-slaves
 		router.route('/edit-slaves')
 			.post(auth.authenticate, Device.authorize("writer"), SlaveType.authorize, function(req, res, next) {
 				Device.findOne({device_id: req.query.device_id}, (err, device) => {
@@ -141,7 +146,7 @@ module.exports = function(router) {
 			})
 
 
-			// to remove a slave,
+			// to remove a slave from a device,
 			.delete(auth.authenticate, Device.authorize("writer"), function(req, res, next) {
 				Device.findOne({device_id: req.query.device_id}, (err, device) => {
 					if(err) return next(err);

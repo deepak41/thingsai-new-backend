@@ -29,6 +29,7 @@ var SlaveTypeSchema = new Schema({
 SlaveTypeSchema.methods.toJSON = function() {
 	var obj = this.toObject()
 	delete obj.__v
+	delete obj._id
 	return obj
 }
 

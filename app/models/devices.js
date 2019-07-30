@@ -22,6 +22,7 @@ var DeviceSchema = new mongoose.Schema({
 DeviceSchema.methods.toJSON = function() {
 	var obj = this.toObject()
 	delete obj.__v
+	delete obj._id
 	return obj
 }
 
