@@ -29,7 +29,9 @@ DeviceDataSchema.plugin(mongoosePaginate);
 
 DeviceDataSchema.methods.toJSON = function() {
 	var obj = this.toObject()
+	delete obj._id
 	delete obj.__v
+	delete obj.updatedAt
 	return obj
 }
 

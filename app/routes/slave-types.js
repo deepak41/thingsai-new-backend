@@ -53,8 +53,8 @@ module.exports = function(router) {
 			});
 
 
-		// to get all slaves of a user, url: /api/slave-types/all-slaves
-		router.route('/all-slaves')
+		// to get all slaves of a user, url: /api/slave-types/user-slaves
+		router.route('/user-slaves')
 			.get(auth.authenticate, function(req, res, next) {
 				SlaveType.find({owner: res.locals.userInfo.email}, (err, slaves) => {
 					if(err) return next(err);

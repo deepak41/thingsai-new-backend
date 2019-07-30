@@ -98,8 +98,8 @@ module.exports = function(router) {
 			});
 
 
-		// to get all devices of a user, url: /api/devices/all-devices
-		router.route('/all-devices')
+		// to get all devices of a user, url: /api/devices/user-devices
+		router.route('/user-devices')
 			.get(auth.authenticate, function(req, res, next) {
 				var devices = []; 
 				res.locals.userInfo.devices.forEach(function(value){
@@ -107,6 +107,11 @@ module.exports = function(router) {
 				});
 				Device.find({device_id: {$in: devices}}, (err, all_devices) => {
 					if(err) return next(err);
+					all_devices = JSON.parse(JSON.stringify(all_devices));
+					all_devices.forEach(function(device){
+						var value = res.locals.userInfo.devices.find(obj => obj.device_id == device.device_id);
+						device.role = value.role;
+					});
 					res.json({
 						error: false,
 						message: "Devices found successfully!",
