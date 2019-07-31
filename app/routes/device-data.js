@@ -2,6 +2,7 @@ var DeviceData = require("../models/device-data");
 var Device = require("../models/devices");
 var User = require("../models/users");
 var SlaveType = require("../models/slave-types");
+var jsonSize = require('json-size')
 
 module.exports = function(router) {
 	'use strict';
@@ -34,6 +35,25 @@ module.exports = function(router) {
 						error: false,
 						message: "Device Data found successfully.",
 						data: result.docs
+					})
+				});
+			});
+
+
+		// to find device data total size, url: /api/device-data/get-total-size
+		router.route('/get-total-size')
+			.get(auth.authenticate, Device.authorize("reader"), function(req, res, next) {
+				var device_id = parseInt(req.query.device_id)
+				DeviceData.getAverageSize(device_id, function(err, averageSize) {
+					if(err) return next(err);
+					DeviceData.count({device_id: device_id}, function(err, count){
+						if(err) return next(err);
+					    var totalSize = ((count*averageSize)/(1024*1024)).toFixed(2);
+					    res.json({
+							error: false,
+							message: "Device Data total size fetched successfully.",
+							data: totalSize
+						})
 					})
 				});
 			});
