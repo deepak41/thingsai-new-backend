@@ -1,6 +1,8 @@
 var mongoose = require('mongoose');
 var mongoosePaginate = require('mongoose-paginate');
 var jsonSize = require('json-size');
+var mongooseAggregatePaginate = require('mongoose-aggregate-paginate');
+var random = require('mongoose-simple-random');
 
 
 var DeviceDataSchema = new mongoose.Schema({
@@ -27,6 +29,9 @@ var DeviceDataSchema = new mongoose.Schema({
 }, {timestamps: true});
 
 DeviceDataSchema.plugin(mongoosePaginate);
+DeviceDataSchema.plugin(mongooseAggregatePaginate);
+
+DeviceDataSchema.plugin(random);
 
 DeviceDataSchema.methods.toJSON = function() {
 	var obj = this.toObject()
@@ -41,10 +46,7 @@ module.exports = DeviceData;
 
 
 DeviceData.getAverageSize = function(device_id, callback) {
-	DeviceData.aggregate([
-	   	{$match: {device_id: device_id}},
-    	{$sample: {size: 10}}
-	], function(err, docs){
+	DeviceData.findRandom({device_id: device_id}, {}, {limit: 10}, function(err, docs) {
 		if(err) return callback(err, null);
 		var size = 0;
 		docs.forEach(function(data) {						
@@ -52,7 +54,7 @@ DeviceData.getAverageSize = function(device_id, callback) {
 		});
 		var averageSize = Math.floor(size/10);
 		callback(null, averageSize);
-	});	
+	});
 }
 
 
