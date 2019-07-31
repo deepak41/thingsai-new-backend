@@ -18,7 +18,7 @@ var UserSchema = new Schema({
 	},
 	phone_no: {
 		type: Number,
-		default: 0
+		default: null
 	},
 	last_active: {
 		type: Number,
@@ -30,7 +30,7 @@ var UserSchema = new Schema({
 	},
 	is_verified: {
 		type: Number,
-		default: 0
+		default: 1
 	},
 	devices : { 
 		type : Array , 
@@ -66,8 +66,13 @@ UserSchema.methods.comparePassword = function(passw, cb) {
 
 UserSchema.methods.toJSON = function() {
 	var obj = this.toObject();
+	delete obj._id
 	delete obj.__v
 	delete obj.password
+	delete obj.devices
+	delete obj.last_active
+	delete obj.resetPasswordToken
+	delete obj.resetPasswordExpires
 	return obj
 };
 

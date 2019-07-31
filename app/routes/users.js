@@ -8,11 +8,19 @@ module.exports = function(router) {
 	// for creating a new user, url /api/users/
 	router.route('/')
 		.post(function(req, res, next) {
-			User.create(req.body, (err, doc) => {
+			var newUser = {
+				email: req.body.email,
+				password: req.body.password,
+				name: req.body.name,
+				phone_no: req.body.phone_no,
+				user_image: req.body.user_image
+			};
+			newUser = JSON.parse(JSON.stringify(newUser));
+			User.create(newUser, (err, doc) => {
 				if(err && err.code == 11000) return next({
 	                status: 409,
 	                message: "Email is already registered!",
-	                email: req.body.email
+	                email: newUser.email
 	            });
 				if (err) return next(err);
 				return res.json({
@@ -44,10 +52,17 @@ module.exports = function(router) {
 	// to update a user, url /api/users/
 	router.route('/')
 		.put(auth.authenticate, function(req, res, next) {
-			delete req.body.last_active;
-			delete req.body.is_verified;
-			delete req.body.devices;
-			User.findOneAndUpdate({email: res.locals.userInfo.email}, req.body, {new: true}, (err, doc) => {
+			var input = {
+				name: req.body.name,
+				phone_no: req.body.phone_no,
+				user_image: req.body.user_image
+			};
+			input = JSON.parse(JSON.stringify(input));
+			if(Object.keys(input).length == 0) return next({
+				status: 400,
+	            message: "Request body is illegal!"
+	        });
+			User.findOneAndUpdate({email: res.locals.userInfo.email}, input, {new: true}, (err, doc) => {
 				if(err) return next(err);
 				if(!doc) return next({
 	                status: 404,
@@ -60,6 +75,7 @@ module.exports = function(router) {
 				})
 			});		
 		});
+
 
 	router.route('/update-by-admin')
 		.put(function(req, res, next) {

@@ -11,7 +11,6 @@ import pymongo
 client = MongoClient('localhost:27017')
 db = client.thingsaidb
 
-localhost = "http://localhost:3000"
 
 users = db.users.find()
 users = list(users)
