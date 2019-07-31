@@ -77,21 +77,5 @@ Utils.pagination = function(req, res, next) {
 
 	res.locals.offset = (res.locals.pageno-1) * res.locals.pagesize;
 	next();
-
 }
 
-
-Utils.getSize = function(device_id, pageno, pagesize) {
-
-	var offset = (pageno-1) * pagesize;
-
-	DeviceData.paginate({
-		device_id: device_id
-	}, { offset: offset, limit: pagesize }, function(err, result) {
-		if(err) return next(err);
-		
-
-	});
-	
-
-}
