@@ -1,7 +1,6 @@
 var mongoose = require('mongoose');
 var mongoosePaginate = require('mongoose-paginate');
 var jsonSize = require('json-size');
-var mongooseAggregatePaginate = require('mongoose-aggregate-paginate');
 var random = require('mongoose-simple-random');
 
 
@@ -29,8 +28,6 @@ var DeviceDataSchema = new mongoose.Schema({
 }, {timestamps: true});
 
 DeviceDataSchema.plugin(mongoosePaginate);
-DeviceDataSchema.plugin(mongooseAggregatePaginate);
-
 DeviceDataSchema.plugin(random);
 
 DeviceDataSchema.methods.toJSON = function() {
