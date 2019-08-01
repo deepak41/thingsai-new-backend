@@ -27,7 +27,6 @@ var start = function(callback) {
 
 	app = express();
 
-
 	app.use(morgan('common'));
 	app.use(bodyParser.urlencoded({
 		extended: true
