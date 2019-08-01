@@ -31,7 +31,7 @@ module.exports = function(router) {
 			// to update a slave.
 			.put(auth.authenticate, SlaveType.authorize, function(req, res, next) {
 				SlaveType.findOneAndUpdate({slave_type_id: req.query.slave_type_id}, req.body, {new: true}, (err, doc) => {
-					if (err) return next(err);
+					if(err) return next(err);
 					res.json({
 						error: false,
 						message: "Slave updated successfully.",

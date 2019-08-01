@@ -29,7 +29,7 @@ module.exports = function(router) {
 				DeviceData.paginate({
 					device_id: req.query.device_id, 
 					slave_id: req.query.slave_id
-				}, { offset: res.locals.offset, limit: res.locals.pagesize }, function(err, result) {
+				}, { offset: res.locals.offset, limit: res.locals.pagesize }, (err, result) => {
 					if(err) return next(err);
 					res.json({
 						error: false,
@@ -44,9 +44,9 @@ module.exports = function(router) {
 		router.route('/get-total-size')
 			.get(auth.authenticate, Device.authorize("reader"), function(req, res, next) {
 				var device_id = parseInt(req.query.device_id)
-				DeviceData.getAverageSize(device_id, function(err, averageSize) {
+				DeviceData.getAverageSize(device_id, (err, averageSize) => {
 					if(err) return next(err);
-					DeviceData.count({device_id: device_id}, function(err, count){
+					DeviceData.count({device_id: device_id}, (err, count) => {
 						if(err) return next(err);
 					    var totalSize = ((count*averageSize)/(1024*1024)).toFixed(2);
 					    res.json({

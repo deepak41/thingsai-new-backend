@@ -9,7 +9,7 @@ module.exports = function(router) {
 		router.route('/')
 			.get(auth.authenticate, Device.authorize("reader"), function(req, res, next) {
 				Device.findOne({device_id: req.query.device_id}, (err, device) => {
-					if (err) return next(err);
+					if(err) return next(err);
 					if(device) {
 						res.json({
 							error: false,
@@ -26,7 +26,7 @@ module.exports = function(router) {
 							    }
 							});
 							user.save((err, test) => {
-								if (err) return next(err);
+								if(err) return next(err);
 								return next({
 									status: 404,
 									message: "No Device found!"
@@ -45,14 +45,14 @@ module.exports = function(router) {
 		                message: "Device ID is already registered!",
 		                device_id: req.body.device_id
 		            });
-				    if (err) return next(err);
+				    if(err) return next(err);
 				    User.findOne({email: res.locals.userInfo.email}, (err, user) => {
 						user.devices = user.devices.concat([{
 							role: "owner",
 							device_id: device.device_id
 						}]);
 						user.save((err, user) => {
-							if (err) return next(err);
+							if(err) return next(err);
 							return res.json({
 								error: false,
 								message: "Device created successfully.",
@@ -66,7 +66,7 @@ module.exports = function(router) {
 			// to update a device.
 			.put(auth.authenticate, Device.authorize("writer"), function(req, res, next) {
 				Device.findOneAndUpdate({device_id: req.query.device_id}, req.body, (err, doc) => {
-					if (err) return next(err);
+					if(err) return next(err);
 					return res.json({
 						error: false,
 						message: "Device updated successfully."
@@ -78,7 +78,7 @@ module.exports = function(router) {
 			// to delete a device.
 			.delete(auth.authenticate, Device.authorize("owner"), function(req, res, next) {
 				Device.findOneAndRemove({device_id: req.query.device_id}, (err, device) => {
-					if (!device) return next("err");
+					if(!device) return next("err");
 					User.findOne({email: res.locals.userInfo.email}, (err, user) => {
 						user.devices.find((obj, index) => {
 						    if (obj.device_id == req.query.device_id) {
@@ -87,7 +87,7 @@ module.exports = function(router) {
 						    }
 						});
 						user.save((err, test) => {
-							if (err) return next(err);
+							if(err) return next(err);
 							return res.json({
 								error: false,
 								message: "Device deleted successfully."
@@ -102,13 +102,13 @@ module.exports = function(router) {
 		router.route('/user-devices')
 			.get(auth.authenticate, function(req, res, next) {
 				var devices = []; 
-				res.locals.userInfo.devices.forEach(function(value){
+				res.locals.userInfo.devices.forEach((value) => {
 					devices.push(value.device_id);
 				});
 				Device.find({device_id: {$in: devices}}, (err, all_devices) => {
 					if(err) return next(err);
 					all_devices = JSON.parse(JSON.stringify(all_devices));
-					all_devices.forEach(function(device){
+					all_devices.forEach((device) => {
 						var value = res.locals.userInfo.devices.find(obj => obj.device_id == device.device_id);
 						device.role = value.role;
 					});
@@ -185,14 +185,14 @@ module.exports = function(router) {
 		router.route('/create-by-admin')
 			.post(function(req, res, next) {
 				Device.create(req.body, (err, device) => {
-				    if (err) return next(err);
+				    if(err) return next(err);
 				    User.findOne({email: req.query.email}, (err, user) => {
 						user.devices = user.devices.concat([{
 							role: "owner",
 							device_id: device.device_id
 						}]);
 						user.save((err, test) => {
-							if (err) return next(err);
+							if(err) return next(err);
 							return res.json({
 								error: false,
 								message: "Device created successfully."

@@ -1,12 +1,12 @@
 var User = require("../models/users");
 
-module.exports = function (router) {
+module.exports = function(router) {
 
     // This will handle the url calls for /api/sessions
     router.route('/')
        .post(function (req, res, next) {
             User.findOne({email: req.body.email}, (err, user) => {                
-                if (!user) return next({
+                if(!user) return next({
                     status: 401,
                     message: "Invalid email or password!"
                 });
@@ -56,7 +56,7 @@ module.exports = function (router) {
                             name: fbuser.name
                         });
                         newUser.save((err, doc) => {
-                            if (err) return next(err);
+                            if(err) return next(err);
                             var token = auth.signToken(doc._id);
                             res.json({
                                 error: false,

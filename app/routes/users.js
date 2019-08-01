@@ -22,7 +22,7 @@ module.exports = function(router) {
 	                message: "Email is already registered!",
 	                email: newUser.email
 	            });
-				if (err) return next(err);
+				if(err) return next(err);
 				return res.json({
 					error: false,
 					message: "User registered successfully!",
@@ -80,7 +80,7 @@ module.exports = function(router) {
 	router.route('/update-by-admin')
 		.put(function(req, res, next) {
 			User.findOneAndUpdate({email: req.query.email}, req.body, (err, doc) => {
-				if (err) return next(err);
+				if(err) return next(err);
 				return res.json({
 					error: false,
 					message: "User updated successfully."
@@ -101,7 +101,7 @@ module.exports = function(router) {
 				function(rpToken, callback) {
 					User.findOne({email: req.body.email}, (err, user) => {
 						if(err) return next(err);
-						if (!user) return next({
+						if(!user) return next({
 							status: 404,
 							message: "No account with that email address exists."
 						});
@@ -124,7 +124,7 @@ module.exports = function(router) {
 					})
 				}],
 				function(err, result) {
-					if (err) return next(err);
+					if(err) return next(err);
 					res.json({
 						error: false,
 						message: result.message,
@@ -141,8 +141,8 @@ module.exports = function(router) {
 				resetPasswordToken: req.params.token,
 				resetPasswordExpires: {$gt: Date.now()}
 			}, (err, user) => {
-				if (err) return next(err);
-				if (!user) return next({
+				if(err) return next(err);
+				if(!user) return next({
 					status: 400,
 					message: "The link is either invalid or has expired."
 				});
@@ -158,8 +158,8 @@ module.exports = function(router) {
 				resetPasswordToken: req.params.token,
 				resetPasswordExpires: {$gt: Date.now()}
 			}, (err, user) => {
-				if (err) return next(err);
-				if (!user) return next({
+				if(err) return next(err);
+				if(!user) return next({
 					status: 400,
 					message: "The link is either invalid or has expired."
 				});
@@ -167,7 +167,7 @@ module.exports = function(router) {
 				user.resetPasswordToken = undefined;
 				user.resetPasswordExpires = undefined;
 				user.save((err) => {
-					if (err) next(err);
+					if(err) next(err);
 					res.json({
 						error: false,
 						message: "Password has been changed successfully."

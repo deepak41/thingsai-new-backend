@@ -15,7 +15,7 @@ Utils.sendPasswordResetMail = function(rpToken, email, name, callback) {
 			"token": rpToken
 		}		      
     };
-    client.send_transactional_template(data).on('complete', function(data) {
+    client.send_transactional_template(data).on('complete', (data) => {
     	data = JSON.parse(data);
 		var err = null;
 		if(data.code == "failure") {
@@ -29,7 +29,7 @@ Utils.getClientByIp = function(ip, path, method, time, callback) {
 	time = time.toLocaleString() + " IST";
 	if(ip.substr(0, 7) == "::ffff:") ip = ip.substr(7);
 	var clientInfo = {ip: ip};
-	Utils.findLocationByIp(clientInfo, function(err, result) {
+	Utils.findLocationByIp(clientInfo, (err, result) => {
 		result.method = method;
 		result.path = path;
 		result.time = time;
@@ -42,7 +42,7 @@ Utils.findLocationByIp = function(clientInfo, callback) {
 	request.get({
 		url: "http://api.ipstack.com/" + clientInfo.ip + "?access_key=" + access_key	
 	}, 
-	function(err, response, body) {
+	(err, response, body) => {
 		body = JSON.parse(body);
 
 		clientInfo.city = body.city;
