@@ -43,11 +43,11 @@ module.exports = DeviceData;
 
 
 DeviceData.getAverageSize = function(device_id, callback) {
-	DeviceData.findRandom({device_id: device_id}, {}, {limit: 10}, function(err, docs) {
+	DeviceData.findRandom({device_id: device_id}, {}, {limit: 10}, (err, docs) => {
 		if(err) return callback(err, null);
 		var size = 0;
-		docs.forEach(function(data) {						
-			size = size + jsonSize(data); 
+		docs.forEach((doc) => {						
+			size = size + jsonSize(doc); 
 		});
 		var averageSize = Math.floor(size/10);
 		callback(null, averageSize);
