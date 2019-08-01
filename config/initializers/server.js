@@ -6,7 +6,7 @@ global.randomstring = require("randomstring");
 global.Utils = require('../../libs/utils');
 global.request = require('request');
 global.path = require('path');
-global.auth = require("../auth2");
+global.auth = require("../auth");
 
 var bodyParser = require('body-parser');
 var morgan = require('morgan');
