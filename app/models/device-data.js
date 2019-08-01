@@ -46,9 +46,11 @@ DeviceData.getAverageSize = function(device_id, callback) {
 	DeviceData.findRandom({device_id: device_id}, {}, {limit: 10}, (err, docs) => {
 		if(err) return callback(err, null);
 		var size = 0;
-		docs.forEach((doc) => {						
-			size = size + jsonSize(doc); 
-		});
+		if(docs) {
+			docs.forEach((doc) => {						
+				size = size + jsonSize(doc); 
+			});
+		};
 		var averageSize = Math.floor(size/10);
 		callback(null, averageSize);
 	});
