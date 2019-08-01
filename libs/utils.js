@@ -1,4 +1,4 @@
-require("./mailin.js");
+require("../config/helpers/libs/mailin");
 var fs = require('fs');
 var util = require('util');
 
