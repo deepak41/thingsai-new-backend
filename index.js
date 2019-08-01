@@ -1,7 +1,6 @@
 // /index.js
 'use strict';
 
-var server = require('./config/initializers/server');
 var nconf = require('nconf');
 var async = require('async');
 var logger = require('winston');
@@ -18,7 +17,9 @@ nconf.argv();
 nconf.env();
 // Load config file for the environment
 require('./config/environments/' + nconf.get('NODE_ENV'));
+
 logger.info('[APP] Starting server initialization');
+var server = require('./config/initializers/server');
 
 //Initialize Modules
 async.waterfall([

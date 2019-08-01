@@ -6,6 +6,7 @@ global.randomstring = require("randomstring");
 global.Utils = require('../../libs/utils');
 global.request = require('request');
 global.path = require('path');
+global.auth = require("../auth2");
 
 var bodyParser = require('body-parser');
 var morgan = require('morgan');
@@ -26,7 +27,6 @@ var start = function(callback) {
 
 	app = express();
 
-	global.auth = require("../auth");
 
 	app.use(morgan('common'));
 	app.use(bodyParser.urlencoded({
