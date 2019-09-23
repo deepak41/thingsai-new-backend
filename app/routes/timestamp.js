@@ -7,8 +7,7 @@ module.exports = function(router) {
 			return res.json({
 				error: false,
 				message: "Timestamp fetched successfully",
-				data: ts,
-				date: timestamp
+				data: ts
 			})
 		})
 
