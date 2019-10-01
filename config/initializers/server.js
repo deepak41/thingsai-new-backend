@@ -43,7 +43,7 @@ var start = function(callback) {
 	});
 
 	/*Code for firebase*/
-	var serviceAccount = require("../../public/" + nconf.get('fserviceAccount'));
+	var serviceAccount = require("../helpers/" + nconf.get('fserviceAccount'));
 	fadmin.initializeApp({
 		credential: fadmin.credential.cert(serviceAccount),
 		databaseURL: nconf.get('fdatabaseURL')
