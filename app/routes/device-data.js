@@ -22,14 +22,32 @@ module.exports = function(router) {
 			})
 
 
-
-		// to find device data, url: /api/device-data
+		// to get device data, url: /api/device-data
 		router.route('/')
 			.get(auth.authenticate, Device.authorize("reader"), Device.checkSlave, Utils.pagination, function(req, res, next) {
-				DeviceData.paginate({
-					device_id: req.query.device_id, 
-					slave_id: req.query.slave_id
-				}, { offset: res.locals.offset, limit: res.locals.pagesize }, (err, result) => {
+				var order = 1;
+				if(req.query.order == "DSC") order = -1;
+
+				var query = {};
+				query.device_id = req.query.device_id;
+				query.slave_id = req.query.slave_id;
+
+				if (req.query.sts && req.query.ets) query.ts = {
+					"$gte": req.query.sts,
+					"$lt": req.query.ets
+				};
+				else if (req.query.sts && !req.query.ets) query.ts = {
+					"$gte": req.query.sts
+				};
+				else if (!req.query.sts && req.query.ets) query.ts = {
+					"$lt": req.query.ets
+				};
+
+				DeviceData.paginate(query, { 
+					offset: res.locals.offset, 
+					limit: res.locals.pagesize, 
+					sort: {ts: order} 
+				}, (err, result) => {
 					if(err) return next(err);
 					res.json({
 						error: false,
