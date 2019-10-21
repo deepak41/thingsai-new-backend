@@ -67,6 +67,53 @@ module.exports = function(router) {
 			});
 
 
+		// to add a new property, url: /api/slave-types/props
+		router.route('/props')
+			.post(auth.authenticate, SlaveType.authorize, function(req, res, next) {
+				var newProp = {
+					name: req.body.name,
+					type: req.body.type,
+					comment: req.body.comment
+				};
+				newProp = JSON.parse(JSON.stringify(newProp));
+				SlaveType.findOne({slave_type_id: req.query.slave_type_id}, (err, slaveType) => {
+					slaveType.props = slaveType.props.concat([newProp]);
+					slaveType.save((err, slaveType) => {
+						if(err) return next(err);
+						return res.json({
+							error: false,
+							message: "Slave property added successfully.",
+							data: slaveType.props
+						})
+					});
+				})
+			})
+
+			// to delete a property
+			.delete(auth.authenticate, SlaveType.authorize, function(req, res, next) {
+				SlaveType.findOne({slave_type_id: req.query.slave_type_id}, (err, slaveType) => {
+					var prop = slaveType.props.find((obj, index) => {
+					    if(obj.name == req.query.propName) {
+					        slaveType.props.splice(index, 1);
+					        return true; // stop searching
+					    }
+					});
+					if(prop == undefined) return next({
+						status: 404,
+		                message: "Property is invalid!"
+					})
+					slaveType.save((err, slaveType) => {
+						if(err) return next(err);
+						return res.json({
+							error: false,
+							message: "Slave property deleted successfully.",
+							data: slaveType.props
+						})
+					});
+				})
+			});
+
+
 		router.route('/create-by-admin')
 			.post(function(req, res, next) {
 				SlaveType.create(req.body, (err, slaveType) => {
