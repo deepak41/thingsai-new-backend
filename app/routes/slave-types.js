@@ -77,6 +77,11 @@ module.exports = function(router) {
 				};
 				newProp = JSON.parse(JSON.stringify(newProp));
 				SlaveType.findOne({slave_type_id: req.query.slave_type_id}, (err, slaveType) => {
+					var prop = slaveType.props.find(obj => obj.name == newProp.name);
+					if(prop) return next({
+						status: 404,
+						message: "Property with this name already exists!"
+					});
 					slaveType.props = slaveType.props.concat([newProp]);
 					slaveType.save((err, slaveType) => {
 						if(err) return next(err);
