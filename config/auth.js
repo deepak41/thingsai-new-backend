@@ -26,14 +26,12 @@ exports.signToken = function(userId) {
 	var token = 'Bearer ' + jwt.sign(
 		{user: userId }, 
 		nconf.get('secret'),
-		{expiresIn: 60*60}
+		{expiresIn: 60*60*24}
 	);
 	return token;
 };
 
-
 exports.verifyFirebaseToken = function(idToken, callback) {
-
 	fadmin.auth().verifyIdToken(idToken).then(function(decodedToken) {
 		callback(null, decodedToken);
 	})
