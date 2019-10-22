@@ -1,5 +1,7 @@
 var SlaveType = require("../models/slave-types");
 var User = require("../models/users");
+var validation = require('./validations/slave-types.js');
+
 
 module.exports = function(router) {
 	'use strict';
@@ -69,7 +71,7 @@ module.exports = function(router) {
 
 		// to add a new slave property, url: /api/slave-types/props
 		router.route('/props')
-			.post(auth.authenticate, SlaveType.authorize, function(req, res, next) {
+			.post(auth.authenticate, validation.addProps, SlaveType.authorize, function(req, res, next) {
 				var newProp = {
 					name: req.body.name,
 					type: req.body.type,
@@ -119,7 +121,7 @@ module.exports = function(router) {
 			})
 
 			// to update a slave property
-			.put(auth.authenticate, SlaveType.authorize, function(req, res, next) {
+			.put(auth.authenticate, validation.updateProps, SlaveType.authorize, function(req, res, next) {
 				var input = {
 					name: req.body.name,
 					type: req.body.type,
