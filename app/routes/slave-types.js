@@ -67,7 +67,7 @@ module.exports = function(router) {
 			});
 
 
-		// to add a new property, url: /api/slave-types/props
+		// to add a new slave property, url: /api/slave-types/props
 		router.route('/props')
 			.post(auth.authenticate, SlaveType.authorize, function(req, res, next) {
 				var newProp = {
@@ -94,7 +94,7 @@ module.exports = function(router) {
 				})
 			})
 
-			// to delete a property
+			// to delete a slave property
 			.delete(auth.authenticate, SlaveType.authorize, function(req, res, next) {
 				SlaveType.findOne({slave_type_id: req.query.slave_type_id}, (err, slaveType) => {
 					var prop = slaveType.props.find((obj, index) => {
@@ -112,6 +112,39 @@ module.exports = function(router) {
 						return res.json({
 							error: false,
 							message: "Slave property deleted successfully.",
+							data: slaveType.props
+						})
+					});
+				})
+			})
+
+			// to update a slave property
+			.put(auth.authenticate, SlaveType.authorize, function(req, res, next) {
+				var input = {
+					name: req.body.name,
+					type: req.body.type,
+					comment: req.body.comment
+				};
+				input = JSON.parse(JSON.stringify(input));
+				SlaveType.findOne({slave_type_id: req.query.slave_type_id}, (err, slaveType) => {
+					var prop = slaveType.props.find((obj, index) => {
+					    if(obj.name == req.query.propName) {
+					    	if(input.name) slaveType.props[index].name = input.name;
+					    	if(input.type) slaveType.props[index].type = input.type;
+					    	if(input.comment) slaveType.props[index].comment = input.comment;
+					        slaveType.markModified('props');
+					        return true; // stop searching
+					    }
+					});
+					if(prop == undefined) return next({
+						status: 404,
+		                message: "Property name is invalid!"
+					});
+					slaveType.save((err, slaveType) => {
+						if(err) return next(err);
+						return res.json({
+							error: false,
+							message: "Slave property updated successfully.",
 							data: slaveType.props
 						})
 					});
