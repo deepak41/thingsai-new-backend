@@ -1,12 +1,12 @@
 global.express = require('express');
 global.nconf = require('nconf');
 global.logger = require('winston');
-global.validate = require('express-validation');
 global.randomstring = require("randomstring");
 global.Utils = require('../../libs/utils');
 global.request = require('request');
 global.path = require('path');
 global.auth = require("../auth");
+global.validate = require('express-joi-validation').createValidator({passError: true})
 
 var bodyParser = require('body-parser');
 var morgan = require('morgan');
@@ -84,6 +84,10 @@ var start = function(callback) {
 	
 	// Error handler
 	app.use(function(err, req, res, next) {
+		if(err.error && err.error.details) {
+			err.status = 400;
+			err.message = err.error.details[0].message
+		};
 		res.status(err.status || 500);
 		res.json({
 			error: true,
