@@ -84,10 +84,14 @@ var start = function(callback) {
 	
 	// Error handler
 	app.use(function(err, req, res, next) {
+		if(err.error && err.error.details) {
+			err.status = 400;
+			err.message = err.error.details[0].message
+		};
 		res.status(err.status || 500);
 		res.json({
 			error: true,
-			message: err.message || err.error.details[0].message,
+			message: err.message,
 			data: (app.get('env') === 'development' ? err : null)
 		});
 	});
