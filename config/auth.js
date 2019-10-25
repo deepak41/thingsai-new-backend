@@ -24,7 +24,7 @@ exports.authenticate = function(req, res, next) {
 
 exports.signToken = function(userId) {
 	var token = 'Bearer ' + jwt.sign(
-		{user: userId }, 
+		{user: userId}, 
 		nconf.get('secret'),
 		{expiresIn: 60*60*24}
 	);

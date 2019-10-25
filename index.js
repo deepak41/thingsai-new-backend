@@ -29,6 +29,5 @@ async.waterfall([
     if (err) {
       logger.error(err.message);
 	  return logger.error('[APP] Initialization FAILED');
-    }
-	logger.info('[APP] Initialized SUCCESSFULLY');		
+    }	
 });

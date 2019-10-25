@@ -30,17 +30,14 @@ module.exports = function(router) {
         });
 
 
-
-
     // This will handle the url calls for /api/sessions/firebaselogin
     router.route('/firebaselogin')
        .post(function (req, res, next) {
             auth.verifyFirebaseToken(req.body.idToken, (err, fbuser) => {
                 if(err) return next({
                     status: 401,
-                    message: "Invalid email or password!"
+                    message: "Firebase token is invalid!"
                 });
-
                 User.findOne({email: fbuser.email}, (err, user) => {
                     if(user) {
                         var token = auth.signToken(user._id);
@@ -51,11 +48,11 @@ module.exports = function(router) {
                         });
                     }
                     else {
-                        var newUser = new User({
+                        var newUser = {
                             email: fbuser.email,
                             name: fbuser.name
-                        });
-                        newUser.save((err, doc) => {
+                        };
+                        User.create(newUser, (err, doc) => {
                             if(err) return next(err);
                             var token = auth.signToken(doc._id);
                             res.json({
@@ -63,7 +60,7 @@ module.exports = function(router) {
                                 token: token,
                                 data: doc
                             });
-                        });
+                        })
                     }
                 });
             })
