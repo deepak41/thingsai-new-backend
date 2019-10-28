@@ -19,7 +19,7 @@ module.exports = function (app) {
         app.use('/api/' + changeCase.paramCase(routeName), router);
     });
     app.get('/', function (req, res) {
-        res.sendFile(path.join(__dirname, '../../public/index.html'));
+        res.sendFile(path.join(__dirname, '../../config/helpers/index.html'));
     });
     app.get('/api', function (req, res) {
         res.writeHead(301, {
