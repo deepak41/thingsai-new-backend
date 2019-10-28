@@ -41,7 +41,6 @@ Device.authorize = function(requiredRole) {
 				message: "Access to this device is denied!",
 				device_id: device_id
 			});
-
             if(requiredRole == "reader") {
             	next()
             }
@@ -59,7 +58,6 @@ Device.authorize = function(requiredRole) {
         }
     ];
 }
-
 
 Device.checkSlave = function(req, res, next) {
 	var slave_id = req.body.slave_id || req.query.slave_id;

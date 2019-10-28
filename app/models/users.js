@@ -93,7 +93,6 @@ User.getFull = function(id, callback) {
 	});
 }
 
-
 User.updateLastActive = function(email) {
 	User.findOneAndUpdate({email: email}, {last_active: parseInt(Date.now()/1000)}, (err, doc) => {
 		return doc;		

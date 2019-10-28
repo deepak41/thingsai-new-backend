@@ -202,6 +202,4 @@ module.exports = function(router) {
 		    })
 		})
 
-
-	
 }
