@@ -59,11 +59,9 @@ Utils.findLocationByIp = function(clientInfo, callback) {
 Utils.logIntoFile = function(data) {
 	if(!fs.existsSync(path.join(__dirname, '../logs'))) 
 	    fs.mkdirSync(path.join(__dirname, '../logs'));
-	
 	var log_file = fs.createWriteStream(path.join(__dirname, '../logs') + '/access.log', {flags : 'a'});
 	log_file.write(util.format(data) + '\n');
 }
-
 
 Utils.pagination = function(req, res, next) {
 	var pageno = 1;
