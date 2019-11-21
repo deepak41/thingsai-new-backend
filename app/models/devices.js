@@ -76,7 +76,6 @@ Device.checkSlave = function(req, res, next) {
 	});	
 };
 
-
 Device.updateLastActive = function(device_id, ts) {
 	Device.findOneAndUpdate({device_id: device_id}, {last_active: ts}, (err, doc) => {});		
 };
