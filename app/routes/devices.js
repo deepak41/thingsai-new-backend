@@ -13,7 +13,7 @@ module.exports = function(router) {
 				if(device) {
 					res.json({
 						error: false,
-						message: "Device found successfully.",
+						message: "Device found successfully!",
 						data: device
 					})	
 				}
@@ -55,7 +55,7 @@ module.exports = function(router) {
 						if(err) return next(err);
 						return res.json({
 							error: false,
-							message: "Device created successfully.",
+							message: "Device created successfully!",
 							data: req.body.device_id
 						})
 					});
@@ -69,7 +69,7 @@ module.exports = function(router) {
 				if(err) return next(err);
 				return res.json({
 					error: false,
-					message: "Device updated successfully."
+					message: "Device updated successfully!"
 				})
 				
 			});	
@@ -90,7 +90,7 @@ module.exports = function(router) {
 						if(err) return next(err);
 						return res.json({
 							error: false,
-							message: "Device deleted successfully."
+							message: "Device deleted successfully!"
 						})
 					});
 				});
@@ -144,7 +144,7 @@ module.exports = function(router) {
 					if(err) return next(err);
 					return res.json({
 						error: false,
-						message: "Slave added successfully.",
+						message: "Slave added successfully!",
 						data: doc
 					})
 				});
@@ -174,7 +174,7 @@ module.exports = function(router) {
 					if(err) return next(err);
 					res.json({
 						error: false,
-						message: "Slave removed successfully.",
+						message: "Slave removed successfully!",
 						data: output
 					})
 				});
@@ -196,7 +196,7 @@ module.exports = function(router) {
 						if(err) return next(err);
 						return res.json({
 							error: false,
-							message: "Device created successfully."
+							message: "Device created successfully!"
 						})
 					});
 				});

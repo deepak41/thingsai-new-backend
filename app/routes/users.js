@@ -70,7 +70,7 @@ module.exports = function(router) {
 	            });
 				return res.json({
 					error: false,
-					message: "User updated successfully.",
+					message: "User updated successfully!",
 					data: doc
 				})
 			});		
@@ -83,7 +83,7 @@ module.exports = function(router) {
 				if(err) return next(err);
 				return res.json({
 					error: false,
-					message: "User updated successfully."
+					message: "User updated successfully!"
 				})
 			});		
 		});
@@ -103,7 +103,7 @@ module.exports = function(router) {
 						if(err) return next(err);
 						if(!user) return next({
 							status: 404,
-							message: "No account with that email address exists."
+							message: "No account with that email address exists!"
 						});
 						user.resetPasswordToken = rpToken;
 						user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
@@ -144,11 +144,11 @@ module.exports = function(router) {
 				if(err) return next(err);
 				if(!user) return next({
 					status: 400,
-					message: "The link is either invalid or has expired."
+					message: "The link is either invalid or expired!"
 				});
 				res.json({
 					error: false,
-					message: "The link is active."
+					message: "The link is active!"
 				});
 			});
 
@@ -161,7 +161,7 @@ module.exports = function(router) {
 				if(err) return next(err);
 				if(!user) return next({
 					status: 400,
-					message: "The link is either invalid or has expired."
+					message: "The link is either invalid or has expired!"
 				});
 				user.password = req.body.password;
 				user.resetPasswordToken = undefined;
@@ -170,7 +170,7 @@ module.exports = function(router) {
 					if(err) next(err);
 					res.json({
 						error: false,
-						message: "Password has been changed successfully."
+						message: "Password has been changed successfully!"
 					})
 				});
 			});

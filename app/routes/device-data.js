@@ -15,7 +15,7 @@ module.exports = function(router) {
 				if(err) return next(err);
 				res.json({
 					error: false,
-					message: "Device Data sent successfully.",
+					message: "Device Data sent successfully!",
 					data: data
 				});
 				var last_active = parseInt(new Date(data.createdAt)/1000);
@@ -53,7 +53,7 @@ module.exports = function(router) {
 				if(err) return next(err);
 				res.json({
 					error: false,
-					message: "Device Data found successfully.",
+					message: "Device Data found successfully!",
 					data: result.docs
 				})
 			});
@@ -71,7 +71,7 @@ module.exports = function(router) {
 				    var totalSize = ((count*averageSize)/(1024*1024)).toFixed(2);
 				    res.json({
 						error: false,
-						message: "Device Data total size fetched successfully.",
+						message: "Device Data total size fetched successfully!",
 						data: totalSize
 					})
 				})
@@ -86,7 +86,7 @@ module.exports = function(router) {
 				if(err) return next(err);
 				res.json({
 					error: false,
-					message: "Device Data sent successfully.",
+					message: "Device Data sent successfully!",
 					data: data
 				})
 			});

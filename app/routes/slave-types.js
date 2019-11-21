@@ -11,7 +11,7 @@ module.exports = function(router) {
 		.get(auth.authenticate, SlaveType.authorize, function(req, res, next) {
 			res.json({
 				error: false,
-				message: "Slave found successfully.",
+				message: "Slave found successfully!",
 				data: res.locals.slave
 			});	
 		})
@@ -24,7 +24,7 @@ module.exports = function(router) {
 			    if(err) return next(err);
 				res.json({
 					error: false,
-					message: "Slave created successfully.",
+					message: "Slave created successfully!",
 					data: slaveType
 				})
 		    })
@@ -36,7 +36,7 @@ module.exports = function(router) {
 				if(err) return next(err);
 				res.json({
 					error: false,
-					message: "Slave updated successfully.",
+					message: "Slave updated successfully!",
 					data: doc
 				})
 			});	
@@ -48,7 +48,7 @@ module.exports = function(router) {
 				if(!slave) return next("err");
 				res.json({
 					error: false,
-					message: "Slave deleted successfully.",
+					message: "Slave deleted successfully!",
 					data: slave.name
 				});
 			});												
@@ -89,7 +89,7 @@ module.exports = function(router) {
 					if(err) return next(err);
 					return res.json({
 						error: false,
-						message: "Slave property added successfully.",
+						message: "Slave property added successfully!",
 						data: slaveType.props
 					})
 				});
@@ -113,7 +113,7 @@ module.exports = function(router) {
 					if(err) return next(err);
 					return res.json({
 						error: false,
-						message: "Slave property deleted successfully.",
+						message: "Slave property deleted successfully!",
 						data: slaveType.props
 					})
 				});
@@ -146,7 +146,7 @@ module.exports = function(router) {
 					if(err) return next(err);
 					return res.json({
 						error: false,
-						message: "Slave property updated successfully.",
+						message: "Slave property updated successfully!",
 						data: slaveType.props
 					})
 				});
@@ -160,7 +160,7 @@ module.exports = function(router) {
 			    if(err) return next(err);
 				return res.json({
 					error: false,
-					message: "Slave created successfully.",
+					message: "Slave created successfully!",
 					data: slaveType
 				})
 		    })
