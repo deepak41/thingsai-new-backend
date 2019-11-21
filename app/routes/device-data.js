@@ -17,7 +17,9 @@ module.exports = function(router) {
 					error: false,
 					message: "Device Data sent successfully.",
 					data: data
-				})
+				});
+				var last_active = parseInt(new Date(data.createdAt)/1000);
+				Device.updateLastActive(data.device_id, last_active);
 			});				
 		})
 
