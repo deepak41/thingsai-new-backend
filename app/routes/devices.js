@@ -111,8 +111,7 @@ module.exports = function(router) {
 				all_devices.forEach((device) => {
 					var value = res.locals.userInfo.devices.find(obj => obj.device_id == device.device_id);
 					device.role = value.role;
-					var currentTs = parseInt(Date.now()/1000);
-					device.isLive = currentTs-device.last_active < 60*60 ? true : false;
+					device.isLive = parseInt(Date.now()/1000)-device.last_active < 60*60 ? true : false;
 				});
 				res.json({
 					error: false,
