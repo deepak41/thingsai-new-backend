@@ -6,10 +6,9 @@ module.exports = function(router) {
 			// res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
 			return res.json({
 				error: false,
-				message: "Timestamp fetched successfully",
+				message: "Timestamp fetched successfully!",
 				data: ts
 			})
 		})
-
 
 }
