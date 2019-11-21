@@ -23,7 +23,7 @@ var DeviceDataSchema = new mongoose.Schema({
 	},
 	ts: {
 		type: Number,
-		default: parseInt(Date.now() / 1000)
+		required: true
 	}
 }, {timestamps: true});
 

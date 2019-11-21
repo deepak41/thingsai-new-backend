@@ -16,7 +16,9 @@ var DeviceSchema = new mongoose.Schema({
 		type : Array , 
 		"default" : [] 
 	},
-
+	last_active: {
+		type: Number
+	}
 }, {timestamps: true});
 
 DeviceSchema.methods.toJSON = function() {
@@ -72,4 +74,8 @@ Device.checkSlave = function(req, res, next) {
 		});
 		next();	
 	});	
+};
+
+Device.updateLastActive = function(device_id, ts) {
+	Device.findOneAndUpdate({device_id: device_id}, {last_active: ts}, (err, doc) => {});		
 };
