@@ -46,3 +46,4 @@ Thumbs.db
 .env
 *.pdf
 logs
+config/helpers/track-user.json
