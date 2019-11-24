@@ -45,12 +45,20 @@ module.exports = function(router) {
 				"$lt": req.query.ets
 			};
 
-			DeviceData.paginate(query, { 
+			var options = { 
 				offset: res.locals.offset, 
 				limit: res.locals.pagesize, 
-				sort: {ts: order} 
-			}, (err, result) => {
+				sort: {ts: order}
+			}
+			if(req.query.property) 
+				options.select = 'createdAt device_id slave_id by_user ts data.' + req.query.property;
+
+			DeviceData.paginate(query, options, (err, result) => {
 				if(err) return next(err);
+				if(result.docs.length==0) return next({
+					status: 404,
+	                message: "No device data was found!",
+				});
 				res.json({
 					error: false,
 					message: "Device Data found successfully!",
