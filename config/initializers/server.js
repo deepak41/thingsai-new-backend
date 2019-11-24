@@ -67,15 +67,7 @@ var start = function(callback) {
 	});
 	//app.use('/api/', apiLimiter);
 
-	var getClient = function(req, res, next) {
-		if(nconf.get('NODE_ENV') === 'production') {
-			Utils.getClientByIp(req.ip, req.path, req.method, req._startTime, (err, data) => {
-				Utils.logIntoFile(err || data)
-			})
-		}
-		next();
-	};
-	// app.use(getClient);
+	app.use(Utils.getClientDetails);
 
 	require('../../app/routes/index')(app);
 	logger.info('[SERVER] Initialized routes');

@@ -25,6 +25,16 @@ Utils.sendPasswordResetMail = function(rpToken, email, name, callback) {
     });
 }
 
+Utils.getClientDetails = function(req, res, next) {
+	var trackUser = require(nconf.get('track-user'));
+	if(nconf.get('NODE_ENV') === 'production' && trackUser.track) {
+		Utils.getClientByIp(req.ip, req.path, req.method, req._startTime, (err, data) => {
+			Utils.logIntoFile(err || data)
+		})
+	}
+	next();
+};
+
 Utils.getClientByIp = function(ip, path, method, time, callback) {
 	time = time.toLocaleString() + " IST";
 	if(ip.substr(0, 7) == "::ffff:") ip = ip.substr(7);
