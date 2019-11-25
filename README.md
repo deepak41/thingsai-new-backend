@@ -1,5 +1,5 @@
 # ThingsAI Backend
-http://13.232.200.4   
+http://13.235.104.223   
 www.thethingscloud.com
 
 NodeJs, ExpressJs & MongoDB based restful backend service for http://beta.thingsai.io
