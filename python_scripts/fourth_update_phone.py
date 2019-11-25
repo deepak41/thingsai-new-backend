@@ -15,15 +15,17 @@ db = client.thingsioportal
 localhost = "http://13.235.104.223"
 
 def getUsers():
-	users = db.user.find({"origin": "customer"})
+	users = db.users.find()
 	users = list(users)
 
 	if len(users) != 0:
 		for user in users:
 			print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ EMAIL @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
-			print(user["email"])
-			print(user["phone_no"])
-			print(updateUser(user["email"], user["phone_no"]))
+			print(user)
+			if "email" in user:
+
+				print(user["phone_no"])
+				print(updateUser(user["email"], user["phone_no"]))
 
 
 def updateUser(email, phone_no):
@@ -39,5 +41,6 @@ def updateUser(email, phone_no):
 		'Content-Type': 'application/json'
 	}
 
-	response = requests.post(url, data=data_json, headers=headers)
+	response = requests.put(url, data=data_json, headers=headers)
 	return response.json()
+getUsers()
