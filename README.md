@@ -21,4 +21,4 @@ Make sure MongoDB instance is running on the system.
 4. Then enter the following commands:   
 `$ npm install`  
 `$ nodemon`  
-The app should be up and running.
+The app should be up and running. 
