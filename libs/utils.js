@@ -8,7 +8,7 @@ var Utils = module.exports = {};
 Utils.sendPasswordResetMail = function(rpToken, email, name, callback) {
 	var client = new Mailin("https://api.sendinblue.com/v2.0","rBIy6wFgPHqxCdcL");
 	var data = { 
-		"id" : 24,
+		"id" : 25,
 		"to" : email,
 		"attr" : {
 			"TO": name,
