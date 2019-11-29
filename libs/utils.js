@@ -8,11 +8,12 @@ var Utils = module.exports = {};
 Utils.sendPasswordResetMail = function(rpToken, email, name, callback) {
 	var client = new Mailin("https://api.sendinblue.com/v2.0","rBIy6wFgPHqxCdcL");
 	var data = { 
-		"id" : 24,
+		"id" : 25,
 		"to" : email,
 		"attr" : {
 			"TO": name,
-			"token": rpToken
+			"link": nconf.get('frontend-server') + "/#/pages/reset-password/" + rpToken,
+			"year": new Date().getFullYear()
 		}		      
     };
     client.send_transactional_template(data).on('complete', (data) => {
