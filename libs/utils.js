@@ -12,7 +12,8 @@ Utils.sendPasswordResetMail = function(rpToken, email, name, callback) {
 		"to" : email,
 		"attr" : {
 			"TO": name,
-			"link": nconf.get('frontend-server') + "/#/pages/reset-password/" + rpToken
+			"link": nconf.get('frontend-server') + "/#/pages/reset-password/" + rpToken,
+			"year": new Date().getFullYear()
 		}		      
     };
     client.send_transactional_template(data).on('complete', (data) => {
