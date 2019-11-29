@@ -11,8 +11,8 @@ import pymongo
 client = MongoClient('localhost:27017')
 db = client.thingsio2
 
-localhost = "http://localhost:3000"
-# localhost = "http://13.232.200.4"
+#localhost = "http://localhost:3000"
+localhost = "http://13.235.246.177"
 
 
 def getDeviceData():

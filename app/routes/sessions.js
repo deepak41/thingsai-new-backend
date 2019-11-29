@@ -66,4 +66,15 @@ module.exports = function(router) {
             })
         });
 
+
+    // This will handle the url calls for /api/sessions/verify-token
+    router.route('/verify-token')
+       .post(auth.authenticate, function (req, res, next) {
+           res.json({
+               error: false,
+               message: "Token is valid",
+               data: null
+           })
+        });
+
 }

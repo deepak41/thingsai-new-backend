@@ -39,6 +39,7 @@ var start = function(callback) {
 		res.header("Access-Control-Allow-Origin", "*");
 		res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Authorization, Content-Type, Accept");
 		res.header('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS');
+		res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
 		next();
 	});
 
