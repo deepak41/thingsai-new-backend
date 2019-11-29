@@ -11,8 +11,8 @@ import pymongo
 client = MongoClient('localhost:27017')
 db = client.thingsio2
 
-localhost = "http://localhost:3000"
-# localhost = "http://13.232.200.4"
+#localhost = "http://localhost:3000"
+localhost = "http://13.235.246.177"
 
 
 def getUsers():
@@ -121,6 +121,10 @@ def getDeviceData(device_id, email):
 	device_data = db.device_data.find({"device_id": device_id})
 	print("5555555555555555555555555555555555555555555555555555555555555555555555555555")
 	print(device_id)
+	if(device_id in [548658719348912029696, 222222222222222216100391386716070547186605138903040, 1343536356252545305280512, 98888888999999999341232128,88547398734432649216, 485473987344326559026715757117440, 1234567890123456850245451776, 9999999999999999583119736832, 11111111111111110656, 245679999999999987417088]):
+		return
+	print("TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT")
+	print(device_data)
 	device_data = list(device_data)
 
 	if(len(device_data)>0):
