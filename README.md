@@ -25,4 +25,6 @@ The app should be up and running.
 
 ## For mongoose unique(if not working):
 `> use thingsaidb`  
-`> db.users.createIndex({email: 1}, {unique: true})`
+`> db.users.createIndex({email: 1}, {unique: true})`  
+`> db.devices.createIndex({device_id: 1}, {unique: true})`  
+`> db.slavetypes.createIndex({slave_type_id: 1}, {unique: true})`
