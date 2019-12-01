@@ -22,3 +22,7 @@ Make sure MongoDB instance is running on the system.
 `$ npm install`  
 `$ nodemon`  
 The app should be up and running. 
+
+## For mongoose unique(if not working):
+`> use thingsaidb`  
+`> db.users.createIndex({email: 1}, {unique: true})`
