@@ -1,8 +1,9 @@
 # ThingsAI Backend
-http://13.235.104.223   
+http://13.235.246.177/   
 www.thethingscloud.com
 
-NodeJs, ExpressJs & MongoDB based restful backend service for http://beta.thingsai.io
+NodeJs, ExpressJs & MongoDB based restful backend service for http://beta.thingsai.io  
+http://13.233.134.17
 
 Repo used from: 
 https://github.com/tolgaek/express-sample-api/
