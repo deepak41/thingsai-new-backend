@@ -12,9 +12,6 @@ var bodyParser = require('body-parser');
 var morgan = require('morgan');
 var mongoose = require('mongoose');
 var RateLimit = require('express-rate-limit');
-var http = require("http");
-const https = require("https"),
-  fs = require("fs");
 
 /*Code for firebase*/
 global.fadmin = require("firebase-admin");
@@ -99,27 +96,6 @@ var start = function(callback) {
 			return callback(err)
 		}
 	  	logger.info('[SERVER] Successfully connected to the DB ' + nconf.get('database'));
-
-
-		// var options = {
-		// 	key: fs.readFileSync('/etc/letsencrypt/live/api2.thingsai.io/privkey.pem', 'utf8'),
-		// 	cert: fs.readFileSync( '/etc/letsencrypt/live/api2.thingsai.io/cert.pem', 'utf8' ),
-		// 	ca: fs.readFileSync( '/etc/letsencrypt/live/api2.thingsai.io/chain.pem', 'utf8' )
-		// };
-
-		// https.createServer(options, app).listen(443, () => {
-  //     			console.log('HTTP Server running on port 443');
-		// });
-
-		// http.createServer(function (req, res) {
-  //   		res.writeHead(301, { "Location": "https://" + req.headers['host'] + req.url });
-  //   		res.end();
-		// }).listen(80);
-
-	  	// Start server
-	 //  	http.createServer(app).listen(nconf.get('NODE_PORT'), () => {
-		// 	logger.info('[SERVER] The server has started at ' + nconf.get('url') + ":" + nconf.get('NODE_PORT'));
-		// });
 
 	  	Utils.createServer(app);
 
