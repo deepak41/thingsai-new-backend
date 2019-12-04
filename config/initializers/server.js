@@ -12,7 +12,6 @@ var bodyParser = require('body-parser');
 var morgan = require('morgan');
 var mongoose = require('mongoose');
 var RateLimit = require('express-rate-limit');
-var http = require("http");
 
 /*Code for firebase*/
 global.fadmin = require("firebase-admin");
@@ -98,9 +97,8 @@ var start = function(callback) {
 	  	logger.info('[SERVER] Successfully connected to the DB ' + nconf.get('database'));
 
 	  	// Start server
-	  	http.createServer(app).listen(nconf.get('NODE_PORT'), () => {
-			logger.info('[SERVER] The server has started at ' + nconf.get('url') + ":" + nconf.get('NODE_PORT'));
-		});
+	  	Utils.createServer(app);
+
 	});
 };
 
