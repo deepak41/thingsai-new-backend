@@ -73,7 +73,6 @@ var start = function(callback) {
 	logger.info('[SERVER] Initialized routes');
 
 	app.use('/public', express.static(path.join(__dirname, '../../public')));
-	app.use('/.well-known', express.static(path.join(__dirname, '../../.well-known')));
 	
 	// Error handler
 	app.use(function(err, req, res, next) {
