@@ -1,6 +1,8 @@
 require("../config/helpers/libs/mailin");
 var fs = require('fs');
 var util = require('util');
+var http = require("http");
+var https = require("https");
 
 
 var Utils = module.exports = {};
@@ -86,5 +88,32 @@ Utils.pagination = function(req, res, next) {
 
 	res.locals.offset = (res.locals.pageno-1) * res.locals.pagesize;
 	next();
+}
+
+Utils.createServer = function(app) {
+
+	if(app.get('env') === 'production') {
+		var options = {
+			key: fs.readFileSync('/etc/letsencrypt/live/api2.thingsai.io/privkey.pem', 'utf8'),
+			cert: fs.readFileSync( '/etc/letsencrypt/live/api2.thingsai.io/cert.pem', 'utf8' ),
+			ca: fs.readFileSync( '/etc/letsencrypt/live/api2.thingsai.io/chain.pem', 'utf8' )
+		};
+		https.createServer(options, app).listen(443, () => {
+      		logger.info('[SERVER] The server has started at ' + nconf.get('url') + ":" + 443);
+		});
+		http.createServer(function (req, res) {
+    		res.writeHead(301, { "Location": "https://" + req.headers['host'] + req.url });
+    		res.end();
+		}).listen(80);
+	}
+	else {
+		http.createServer(app).listen(nconf.get('NODE_PORT'), () => {
+			logger.info('[SERVER] The server has started at ' + nconf.get('url') + ":" + nconf.get('NODE_PORT'));
+		});
+	} 
+
+
+
+	
 }
 
