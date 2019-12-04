@@ -97,6 +97,7 @@ var start = function(callback) {
 		}
 	  	logger.info('[SERVER] Successfully connected to the DB ' + nconf.get('database'));
 
+	  	// Start server
 	  	Utils.createServer(app);
 
 	});
