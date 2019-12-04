@@ -102,9 +102,9 @@ var start = function(callback) {
 
 
 		var options = {
-			key: fs.readFileSync('/etc/letsencrypt/live/app.blackforest.tech/privkey.pem', 'utf8'),
-			cert: fs.readFileSync( '/etc/letsencrypt/live/app.blackforest.tech/cert.pem', 'utf8' ),
-			ca: fs.readFileSync( '/etc/letsencrypt/live/app.blackforest.tech/chain.pem', 'utf8' )
+			key: fs.readFileSync('/etc/letsencrypt/live/api2.thingsai.io/privkey.pem', 'utf8'),
+			cert: fs.readFileSync( '/etc/letsencrypt/live/api2.thingsai.io/cert.pem', 'utf8' ),
+			ca: fs.readFileSync( '/etc/letsencrypt/live/api2.thingsai.io/chain.pem', 'utf8' )
 		};
 
 		https.createServer(options, app).listen(443, () => {
@@ -112,7 +112,8 @@ var start = function(callback) {
 		});
 
 		http.createServer(function (req, res) {
-    			res.redirect('https://' + req.headers.host + req.url);
+    			res.writeHead(301, { "Location": "https://" + req.headers['host'] + req.url });
+    res.end();
 		}).listen(80);
 
 	  	// Start server
