@@ -29,3 +29,7 @@ The app should be up and running.
 `> db.users.createIndex({email: 1}, {unique: true})`  
 `> db.devices.createIndex({device_id: 1}, {unique: true})`  
 `> db.slavetypes.createIndex({slave_type_id: 1}, {unique: true})`
+
+## For making db dump
+Login into primary replica  
+`$ mongodump -u adminUser -p things123`
