@@ -30,6 +30,9 @@ The app should be up and running.
 `> db.devices.createIndex({device_id: 1}, {unique: true})`  
 `> db.slavetypes.createIndex({slave_type_id: 1}, {unique: true})`
 
+## For logging in into mongo  
+`$ mongo admin -u adminUser -p things123`
+
 ## For making db dump
 Login into primary replica  
 `$ mongodump -u adminUser -p things123`
