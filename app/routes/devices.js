@@ -7,10 +7,12 @@ module.exports = function(router) {
 
 	// to find a device, url: /api/devices
 	router.route('/')
-		.get(auth.authenticate, Device.authorize("reader"), function(req, res, next) {
+		.get(auth.authenticate, Device.authorize("reader"), Utils.cache, function(req, res, next) {
 			Device.findOne({device_id: req.query.device_id}, (err, device) => {
 				if(err) return next(err);
 				if(device) {
+					var entry = "device_id"+ req.query.device_id;
+					redisClient.setex(entry, 3600, JSON.stringify(device));
 					res.json({
 						error: false,
 						message: "Device found successfully!",

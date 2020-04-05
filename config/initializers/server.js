@@ -6,7 +6,8 @@ global.Utils = require('../../libs/utils');
 global.request = require('request');
 global.path = require('path');
 global.auth = require("../auth");
-global.validate = require('express-joi-validation').createValidator({passError: true})
+global.validate = require('express-joi-validation').createValidator({passError: true});
+const redis = require('redis');
 
 var bodyParser = require('body-parser');
 var morgan = require('morgan');
@@ -68,6 +69,14 @@ var start = function(callback) {
 	//app.use('/api/', apiLimiter);
 
 	app.use(Utils.getClientDetails);
+
+	const REDIS_HOST = "52.66.208.152";
+	const REDIS_HOST = "127.0.0.1";
+	const REDIS_PORT = 6379;
+	global.redisClient = redis.createClient({
+	    host: REDIS_HOST,
+	    port: REDIS_PORT
+	});
 
 	require('../../app/routes/index')(app);
 	logger.info('[SERVER] Initialized routes');
