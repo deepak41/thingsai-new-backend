@@ -6,7 +6,8 @@ global.Utils = require('../../libs/utils');
 global.request = require('request');
 global.path = require('path');
 global.auth = require("../auth");
-global.validate = require('express-joi-validation').createValidator({passError: true})
+global.validate = require('express-joi-validation').createValidator({passError: true});
+// const redis = require('redis');
 
 var bodyParser = require('body-parser');
 var morgan = require('morgan');
@@ -68,6 +69,10 @@ var start = function(callback) {
 	//app.use('/api/', apiLimiter);
 
 	app.use(Utils.getClientDetails);
+
+	if(nconf.get('NODE_ENV') === 'production') {
+		Utils.redisConnect();
+	}
 
 	require('../../app/routes/index')(app);
 	logger.info('[SERVER] Initialized routes');

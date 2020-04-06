@@ -3,6 +3,7 @@ var fs = require('fs');
 var util = require('util');
 var http = require("http");
 var https = require("https");
+const redis = require('redis');
 
 
 var Utils = module.exports = {};
@@ -90,25 +91,63 @@ Utils.pagination = function(req, res, next) {
 	next();
 }
 
+// Utils.createServer = function(app) {
+// 	if(app.get('env') === 'production') {
+// 		var options = {
+// 			key: fs.readFileSync('/etc/letsencrypt/live/api2.thingsai.io/privkey.pem', 'utf8'),
+// 			cert: fs.readFileSync( '/etc/letsencrypt/live/api2.thingsai.io/cert.pem', 'utf8' ),
+// 			ca: fs.readFileSync( '/etc/letsencrypt/live/api2.thingsai.io/chain.pem', 'utf8' )
+// 		};
+// 		https.createServer(options, app).listen(443, () => {
+//       		logger.info('[SERVER] The server has started at ' + nconf.get('url') + ":" + 443);
+// 		});
+// 		http.createServer(function (req, res) {
+//     		res.writeHead(301, { "Location": "https://" + req.headers['host'] + req.url });
+//     		res.end();
+// 		}).listen(80);
+// 	}
+// 	else {
+// 		http.createServer(app).listen(nconf.get('NODE_PORT'), () => {
+// 			logger.info('[SERVER] The server has started at ' + nconf.get('url') + ":" + nconf.get('NODE_PORT'));
+// 		});
+// 	}	
+// }
+
+
 Utils.createServer = function(app) {
-	if(app.get('env') === 'production') {
-		var options = {
-			key: fs.readFileSync('/etc/letsencrypt/live/api2.thingsai.io/privkey.pem', 'utf8'),
-			cert: fs.readFileSync( '/etc/letsencrypt/live/api2.thingsai.io/cert.pem', 'utf8' ),
-			ca: fs.readFileSync( '/etc/letsencrypt/live/api2.thingsai.io/chain.pem', 'utf8' )
-		};
-		https.createServer(options, app).listen(443, () => {
-      		logger.info('[SERVER] The server has started at ' + nconf.get('url') + ":" + 443);
-		});
-		http.createServer(function (req, res) {
-    		res.writeHead(301, { "Location": "https://" + req.headers['host'] + req.url });
-    		res.end();
-		}).listen(80);
-	}
-	else {
-		http.createServer(app).listen(nconf.get('NODE_PORT'), () => {
-			logger.info('[SERVER] The server has started at ' + nconf.get('url') + ":" + nconf.get('NODE_PORT'));
-		});
-	}	
+	http.createServer(app).listen(nconf.get('NODE_PORT'), () => {
+		logger.info('[SERVER] The server has started at ' + nconf.get('url') + ":" + nconf.get('NODE_PORT'));
+	});	
 }
 
+
+Utils.redisConnect = function() {
+	const REDIS_HOST = "127.0.0.1";
+	const REDIS_PORT = 6379;
+	global.redisClient = redis.createClient({
+	    host: REDIS_HOST,
+	    port: REDIS_PORT
+	});
+	redisClient.on('error', function(err) {
+		console.log(err);
+	});
+}
+
+
+Utils.cache = function(req, res, next) {
+	if(nconf.get('NODE_ENV') === 'production') {
+		const { device_id } = req.query;
+		redisClient.get("device_id" + device_id, (err, data) => {
+			if(err) return next(err);
+			if(data != null) {
+				return res.json({
+					error: "falseeee",
+					message: "Device found successfully!",
+					data: JSON.parse(data)
+				})
+			}
+			next();
+		})
+	}
+	else next();
+}

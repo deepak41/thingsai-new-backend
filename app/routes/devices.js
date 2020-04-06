@@ -7,10 +7,14 @@ module.exports = function(router) {
 
 	// to find a device, url: /api/devices
 	router.route('/')
-		.get(auth.authenticate, Device.authorize("reader"), function(req, res, next) {
+		.get(auth.authenticate, Device.authorize("reader"), Utils.cache, function(req, res, next) {
 			Device.findOne({device_id: req.query.device_id}, (err, device) => {
 				if(err) return next(err);
 				if(device) {
+					if(nconf.get('NODE_ENV') === 'production') {
+						var entry = "device_id" + req.query.device_id;
+						redisClient.setex(entry, 3600, JSON.stringify(device));
+					};
 					res.json({
 						error: false,
 						message: "Device found successfully!",
@@ -67,6 +71,10 @@ module.exports = function(router) {
 		.put(auth.authenticate, Device.authorize("writer"), function(req, res, next) {
 			Device.findOneAndUpdate({device_id: req.query.device_id}, req.body, (err, doc) => {
 				if(err) return next(err);
+				if(nconf.get('NODE_ENV') === 'production') {
+					var entry = "device_id" + req.query.device_id;
+					redisClient.del(entry);
+				};
 				return res.json({
 					error: false,
 					message: "Device updated successfully!"
@@ -79,6 +87,10 @@ module.exports = function(router) {
 		.delete(auth.authenticate, Device.authorize("owner"), function(req, res, next) {
 			Device.findOneAndRemove({device_id: req.query.device_id}, (err, device) => {
 				if(!device) return next("err");
+				if(nconf.get('NODE_ENV') === 'production') {
+					var entry = "device_id" + req.query.device_id;
+					redisClient.del(entry);
+				};
 				User.findOne({email: res.locals.userInfo.email}, (err, user) => {
 					user.devices.find((obj, index) => {
 					    if (obj.device_id == req.query.device_id) {
