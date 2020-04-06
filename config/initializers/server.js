@@ -70,20 +70,9 @@ var start = function(callback) {
 
 	app.use(Utils.getClientDetails);
 
-
-	// try {
-	  	
-
-
-
-	// }
-	// catch(error) {
-	//   console.error(error);
-	// }
-
-
-
-	Utils.redisConnect();
+	if(app.get('env') === 'production') {
+		Utils.redisConnect();
+	}
 
 	require('../../app/routes/index')(app);
 	logger.info('[SERVER] Initialized routes');

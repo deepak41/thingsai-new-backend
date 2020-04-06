@@ -122,27 +122,32 @@ Utils.createServer = function(app) {
 
 
 Utils.redisConnect = function() {
-	//const REDIS_HOST = "52.66.208.152";
 	const REDIS_HOST = "127.0.0.1";
 	const REDIS_PORT = 6379;
 	global.redisClient = redis.createClient({
 	    host: REDIS_HOST,
 	    port: REDIS_PORT
 	});
+	redisClient.on('error', function(err) {
+		console.log(err);
+	});
 }
 
 
 Utils.cache = function(req, res, next) {
-	const { device_id } = req.query;
-	redisClient.get("device_id" + device_id, (err, data) => {
-		if(err) return next(err);
-		if(data != null) {
-			return res.json({
-				error: "falseeee",
-				message: "Device found successfully!",
-				data: JSON.parse(data)
-			})
-		}
-		next();
-	})
+	if(app.get('env') === 'production') {
+		const { device_id } = req.query;
+		redisClient.get("device_id" + device_id, (err, data) => {
+			if(err) return next(err);
+			if(data != null) {
+				return res.json({
+					error: "falseeee",
+					message: "Device found successfully!",
+					data: JSON.parse(data)
+				})
+			}
+			next();
+		})
+	}
+	else next();
 }
