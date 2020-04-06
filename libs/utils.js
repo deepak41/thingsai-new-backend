@@ -145,6 +145,7 @@ Utils.cache = function(req, res, next) {
 		if(err) return next(err);
 
 		if(data != null) {
+			console.log("kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk")
 			res.json({
 				error: "falseeee",
 				message: "Device found successfully!",
