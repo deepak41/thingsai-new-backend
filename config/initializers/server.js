@@ -70,7 +70,7 @@ var start = function(callback) {
 
 	app.use(Utils.getClientDetails);
 
-	if(app.get('env') === 'production') {
+	if(nconf.get('NODE_ENV') === 'production') {
 		Utils.redisConnect();
 	}
 

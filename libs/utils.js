@@ -135,7 +135,7 @@ Utils.redisConnect = function() {
 
 
 Utils.cache = function(req, res, next) {
-	if(app.get('env') === 'production') {
+	if(nconf.get('NODE_ENV') === 'production') {
 		const { device_id } = req.query;
 		redisClient.get("device_id" + device_id, (err, data) => {
 			if(err) return next(err);

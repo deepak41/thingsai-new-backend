@@ -11,7 +11,7 @@ module.exports = function(router) {
 			Device.findOne({device_id: req.query.device_id}, (err, device) => {
 				if(err) return next(err);
 				if(device) {
-					if(app.get('env') === 'production') {
+					if(nconf.get('NODE_ENV') === 'production') {
 						var entry = "device_id"+ req.query.device_id;
 						redisClient.setex(entry, 3600, JSON.stringify(device));
 					};
