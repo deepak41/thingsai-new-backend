@@ -3,6 +3,7 @@ var fs = require('fs');
 var util = require('util');
 var http = require("http");
 var https = require("https");
+const redis = require('redis');
 
 
 var Utils = module.exports = {};
@@ -117,6 +118,21 @@ Utils.createServer = function(app) {
 	http.createServer(app).listen(nconf.get('NODE_PORT'), () => {
 		logger.info('[SERVER] The server has started at ' + nconf.get('url') + ":" + nconf.get('NODE_PORT'));
 	});	
+}
+
+
+Utils.redisConnect = function() {
+
+	//const REDIS_HOST = "52.66.208.152";
+	const REDIS_HOST = "127.0.0.1";
+	const REDIS_PORT = 6379;
+	global.redisClient = redis.createClient({
+	    host: REDIS_HOST,
+	    port: REDIS_PORT
+	});
+
+
+
 }
 
 
