@@ -2,7 +2,7 @@
 http://13.235.246.177/   
 www.thethingscloud.com
 
-NodeJs 12.13.1, ExpressJs 4.13.0 & MongoDB 3.4.19 based restful backend service for http://beta.thingsai.io  
+NodeJs 8.4.0, ExpressJs 4.13.0 & MongoDB 3.4.19 based restful backend service for http://beta.thingsai.io  
 http://13.233.134.17
 
 Repo used from: 
