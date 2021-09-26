@@ -8,4 +8,4 @@ nconf.set('track-user', '../config/helpers/track-user.json');
 // nconf.set('database', 'mongodb://localhost/thingsaidb');
 nconf.set('frontend-server', 'http://beta.thingsai.io');
 
-nconf.set('database', 'mongodb://thingsaiDev:things123@15.206.80.166:27017,13.234.114.192:27017/thingsaidb?authSource=admin&replicaSet=rsthingsai');
+nconf.set('database', 'mongodb://thingsaiDev:things123@13.233.134.217:27017,13.232.230.147:27017/thingsaidb?authSource=admin&replicaSet=rsthingsai');

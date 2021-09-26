@@ -6,6 +6,11 @@ var User = require("../app/models/users");
 
 exports.authenticate = function(req, res, next) {
 	passport.authenticate('jwt', {session: false}, (data) => {
+
+
+		console.log("99999999999999999999999999999")
+		console.log(data)
+
 		if(!data) return next({
 			status: 401,
             message: "Authorisation token is invalid or expired!"
@@ -23,6 +28,19 @@ exports.authenticate = function(req, res, next) {
 };
 
 exports.signToken = function(userId) {
+	var token = 'Bearer ' + jwt.sign(
+		{token_data: {
+				user_id: userId,
+
+			}
+		}, 
+		nconf.get('secret'),
+		{expiresIn: 60*60*24}
+	);
+	return token;
+};
+
+exports.signToken2 = function(userId) {
 	var token = 'Bearer ' + jwt.sign(
 		{user: userId}, 
 		nconf.get('secret'),
